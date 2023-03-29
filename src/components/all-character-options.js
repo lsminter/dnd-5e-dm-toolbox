@@ -59,13 +59,13 @@ export default function AllCharacterOptions() {
 
   const inputString = aiResponse;
 
-  const outputArray = inputString.split('\n').filter(Boolean); // split the input string at each "\n" character, and remove any empty strings
+  const outputArray = inputString.split('\n').filter(Boolean); 
 
   const outputObject = {};
 
   for (let item of outputArray) {
-    const [key, value] = item.split(':').map((item) => item.trim()); // split each item at the ":" character, and trim any whitespace around the key and value
-    outputObject[key] = value; // add the key-value pair to the output object
+    const [key, value] = item.split(':').map((item) => item.trim()); 
+    outputObject[key] = value; 
   }
 
   const name = Object.keys(outputObject)[0]
@@ -78,7 +78,7 @@ export default function AllCharacterOptions() {
 
   const fetchImageResponse = async () => {
     const reply = await openai.createImage({
-      prompt: `Create a dnd character image based on this description: ${descriptionValue} Make sure I can see the full character in the image.`,
+      prompt: `Create the image of a dnd character image based on this description: ${descriptionValue} The race is ${race}, and the class is ${characterClass}. Make sure the colors and race match the description and I can see the full character in the image.`,
       n: 1,
       size: "256x256",
     })
@@ -153,8 +153,7 @@ export default function AllCharacterOptions() {
             alt="DALL-E image of dnd character"
             width={250}
             height={250}
-          >{console.log(image)}
-          </Image>
+          />
           )}
         </div>
       }
