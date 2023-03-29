@@ -2,24 +2,23 @@ import CharacterAlignment from './character-alignment.js'
 import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
 import { useState } from 'react';
+import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
-
 import { InfinitySpin } from 'react-loader-spinner'
 
-
-
 import {
-  useQuery,
   useQueryClient
 } from "react-query";
 
 
 export default function AllCharacterOptions() {
-  const [race, setRace] = useState("")
-  const [characterClass, setCharacterClass] = useState("")
-  const [alignment, setAlignment] = useState("")
+  const [race, setRace] = useState("Dragonborn")
+  const [characterClass, setCharacterClass] = useState("Barbarian")
+  const [alignment, setAlignment] = useState("Chaotic Evil")
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
+  const [imageSpinner, setImageSpinner] = useState(false)
+  const [image, setImage] = useState(undefined);
 
   const queryClient = useQueryClient()
 
@@ -40,19 +39,51 @@ export default function AllCharacterOptions() {
 
   const allOptions = `The race is ${race}, the class of the character is ${characterClass}, and the alignment is ${alignment}.`
 
+  const configuration = new Configuration({
+    apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
+  });
+
+  const openai = new OpenAIApi(configuration);
+
   const fetchAIResponse = async () => {
-    const configuration = new Configuration({
-      apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
-    });
-
-    const openai = new OpenAIApi(configuration);
-
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{role: "user", content: `I need a first and last name, character description, and a short background for a 5E DND character based on the following information. ${allOptions}`}],
+      messages: [{role: "user", content: `I need a first and last name, character description that is less than 400 characters, and a short background for a 5E DND character based on the following information. ${allOptions}`}],
     });
     setAiResponse(() => {
       return completion.data.choices[0].message.content;
+    })
+  }
+
+  console.log(aiResponse)
+
+  const inputString = aiResponse;
+
+  const outputArray = inputString.split('\n').filter(Boolean); // split the input string at each "\n" character, and remove any empty strings
+
+  const outputObject = {};
+
+  for (let item of outputArray) {
+    const [key, value] = item.split(':').map((item) => item.trim()); // split each item at the ":" character, and trim any whitespace around the key and value
+    outputObject[key] = value; // add the key-value pair to the output object
+  }
+
+  const name = Object.keys(outputObject)[0]
+  const description = Object.keys(outputObject)[1]
+  const background = Object.keys(outputObject)[2]
+
+  const nameValue = outputObject[name];
+  const descriptionValue = outputObject[description];
+  const backgroundValue = outputObject[background];
+
+  const fetchImageResponse = async () => {
+    const reply = await openai.createImage({
+      prompt: `Create a dnd character image based on this description: ${descriptionValue} Make sure I can see the full character in the image.`,
+      n: 1,
+      size: "256x256",
+    })
+    setImage(() => {
+      return reply.data.data[0].url
     })
   }
   
@@ -62,7 +93,16 @@ export default function AllCharacterOptions() {
     fetchAIResponse()
     .then((data) => {
       setSpinner(false);
-     });
+     })
+    .then(() => {
+      setImageSpinner(true)
+    })
+    .then(() => {
+      fetchImageResponse();
+    })
+    .then(() => {
+      setImageSpinner(false)
+    })
   }
   
   return (
@@ -81,7 +121,42 @@ export default function AllCharacterOptions() {
           width='200'
           color="#00008B"
         />
-        ) : <p>{aiResponse}</p>
+        ) : <div>
+          <div>
+            <h1 className="font-bold">
+              {name}
+            </h1>
+            <p>
+              {nameValue}
+            </p>
+            <h1 className="font-bold">
+              {description}
+            </h1>
+            <p>
+              {descriptionValue}
+            </p>
+            <h1 className="font-bold">
+              {background}
+            </h1>
+            <p>
+              {backgroundValue}
+            </p>
+          </div>
+          {image === undefined ? (
+            <div />
+          ) :
+            imageSpinner === true ? (
+              <p>Loading...</p>
+            ):(
+            <Image 
+            src={image}
+            alt="DALL-E image of dnd character"
+            width={250}
+            height={250}
+          >{console.log(image)}
+          </Image>
+          )}
+        </div>
       }
     </div>
   )
