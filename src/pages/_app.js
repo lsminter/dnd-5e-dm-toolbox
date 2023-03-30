@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import Header from '../components/Header.js'
 import {useState} from 'react'
 import {
   QueryClient,
@@ -11,6 +12,7 @@ export default function App({ Component, pageProps }) {
   return (
     <div className="h-screen bg-white text-black p-4">
     <QueryClientProvider client={queryClient}>
+    <Header />
       <Component {...pageProps} />
     </QueryClientProvider>
     </div>)

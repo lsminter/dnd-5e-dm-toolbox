@@ -2,15 +2,11 @@ import CharacterAlignment from './character-alignment.js'
 import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
 import CharacterSex from './character-sex.js'
+import d10 from './loot-generator/loot-functions.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
 import { InfinitySpin } from 'react-loader-spinner'
-
-import {
-  useQueryClient
-} from "react-query";
-
 
 export default function AllCharacterOptions() {
   const [race, setRace] = useState("Dragonborn")
@@ -21,8 +17,6 @@ export default function AllCharacterOptions() {
   const [spinner, setSpinner] = useState(false)
   const [imageSpinner, setImageSpinner] = useState(false)
   const [image, setImage] = useState(undefined);
-
-  const queryClient = useQueryClient()
 
   const handleSelectedRace = () => {
     const selectedRace = document?.getElementById("race")?.value;
@@ -80,7 +74,7 @@ export default function AllCharacterOptions() {
   const nameValue = outputObject[name];
   const descriptionValue = outputObject[description];
   const backgroundValue = outputObject[background];
-
+  
   const fetchImageResponse = async () => {
     setImage();
     const reply = await openai.createImage({
