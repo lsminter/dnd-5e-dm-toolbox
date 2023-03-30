@@ -1,6 +1,7 @@
 import CharacterAlignment from './character-alignment.js'
 import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
+import CharacterSex from './character-sex.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
@@ -15,6 +16,7 @@ export default function AllCharacterOptions() {
   const [race, setRace] = useState("Dragonborn")
   const [characterClass, setCharacterClass] = useState("Barbarian")
   const [alignment, setAlignment] = useState("Chaotic Evil")
+  const [sex, setSex] = useState("Male")
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
   const [imageSpinner, setImageSpinner] = useState(false)
@@ -36,8 +38,13 @@ export default function AllCharacterOptions() {
     const selectedClass = document?.getElementById("class")?.value;
     setCharacterClass(selectedClass)
   }
+  
+  const handleCharacterSex = () => {
+    const selectedSex = document?.getElementById("sex")?.value;
+    setSex(selectedSex)
+  }
 
-  const allOptions = `The race is ${race}, the class of the character is ${characterClass}, and the alignment is ${alignment}.`
+  const allOptions = `The race is ${race}, the class of the character is ${characterClass}, they are ${sex}, and the alignment is ${alignment}.`
 
   const configuration = new Configuration({
     apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
@@ -48,14 +55,12 @@ export default function AllCharacterOptions() {
   const fetchAIResponse = async () => {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{role: "user", content: `I need a first and last name, character description that is less than 400 characters, and a short background for a 5E DND character based on the following information. ${allOptions}`}],
+      messages: [{role: "user", content: `I need a first and last name under "name", character description that is less than 400 characters under "Description", and a short background for a 5E DND character based on the following information under "Background". ${allOptions}`}],
     });
     setAiResponse(() => {
       return completion.data.choices[0].message.content;
     })
   }
-
-  console.log(aiResponse)
 
   const inputString = aiResponse;
 
@@ -77,8 +82,9 @@ export default function AllCharacterOptions() {
   const backgroundValue = outputObject[background];
 
   const fetchImageResponse = async () => {
+    setImage();
     const reply = await openai.createImage({
-      prompt: `Create the image of a dnd character image based on this description: ${descriptionValue} The race is ${race}, and the class is ${characterClass}. Make sure the colors and race match the description and I can see the full character in the image.`,
+      prompt: `Standing on ground, digital art, 4k, ${sex}, ${race}, ${descriptionValue}.`,
       n: 1,
       size: "256x256",
     })
@@ -114,6 +120,7 @@ export default function AllCharacterOptions() {
         <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
         <CharacterAlignment className="m-2" selectedAlignment={() => handleAlignment()}/>
         <CharacterClass className="m-2" selectedCharacterClass={() => handleCharacterClass()}/>
+        <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
         <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
