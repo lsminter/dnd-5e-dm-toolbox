@@ -1,4 +1,4 @@
-import AllCharacterOptions from '../components/all-character-options.js'
+import AllCharacterOptions from '../components/character-options/all-character-options.js'
 
 
 export default function Home() {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import HeaderDropdown from './random-components/HeaderDropdown.js'
+import HeaderDropdown from './HeaderDropdown.js'
 
 const Header = () => {
   return (

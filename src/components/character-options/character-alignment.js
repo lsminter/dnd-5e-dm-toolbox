@@ -42,7 +42,7 @@ function CharacterAlignment({ selectedAlignment }) {
                   </option>
                 )
               })}
-              </select>
+            </select>
             </div>
             <div>{isFetching ? "Background Updating..." : " "}</div>
           </>

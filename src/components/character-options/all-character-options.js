@@ -2,7 +2,7 @@ import CharacterAlignment from './character-alignment.js'
 import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
 import CharacterSex from './character-sex.js'
-import d10 from './loot-generator/loot-functions.js'
+import d10 from '../loot-generator/loot-functions.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
