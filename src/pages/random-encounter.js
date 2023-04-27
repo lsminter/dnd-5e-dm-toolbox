@@ -1,5 +1,3 @@
-import {useState} from 'react'
-import axios from 'axios'
 import RandomEncounter from '../components/random-encounter/random-monsters.js'
 
 export default function EncounterPage(props) {

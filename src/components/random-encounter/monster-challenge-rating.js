@@ -1,13 +1,19 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import axios from 'axios'
-import {useQuery} from "react-query";
+import { InfinitySpin } from 'react-loader-spinner'
 
-export default function ChallengeRating({selectedEncounter}) {
+export default function ChallengeRating() {
 
   const [number, setNumber] = useState();
-  const [monsterData, setMonsterData] = useState(null);
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedNames, setSelectedNames] = useState([]);
+  const [uniqueNames, setUniqueNames] = useState([]);
+  const [monsters, setMonsters] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [encounter, setEncounter] = useState(false);
+  const [encounteredMonsters, setEncounteredMonsters] = useState([])
 
-  function fetchMonstersByChallengeRating(challengeRating, apiUrl = null) {
+  const fetchMonstersByChallengeRating = useCallback((challengeRating, apiUrl = null) => {
     apiUrl = apiUrl || `https://api.open5e.com/monsters?challenge_rating=${number}`;
   
     return axios.get(apiUrl).then((response) => {
@@ -22,64 +28,140 @@ export default function ChallengeRating({selectedEncounter}) {
         return monsters;
       }
     });
-  }
-  
-  function useMonstersByChallengeRating(challengeRating) {
-    return useQuery(['monsters', number, challengeRating], () => fetchMonstersByChallengeRating(challengeRating));
-  }
+  }, [number])
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    fetchMonstersByChallengeRating(number).then((monsters) => {
+      const monsterNames = monsters.map((monster) => {
+        return monster.name;
+      });
+
+      const uniqueNames = [...new Set(monsterNames)];
+
+      setUniqueNames(uniqueNames);
+    });
+  }, [fetchMonstersByChallengeRating, number]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setMonsters([])
+      const result = await fetchMonstersByChallengeRating(number);
+      setMonsters(result);
+    }
+    fetchData();
+  }, [fetchMonstersByChallengeRating, number]);
+
+  useEffect(() => {
+    const types = selectedNames.reduce((acc, name) => {
+      const monster = monsters.find((monster) => {
+        return monster.name === name;
+      });
+      if (monster && monster.type) {
+        return [...acc, monster.type];
+      }
+      return acc;
+    }, []);
+    setSelectedTypes([...new Set(types)]);
+  }, [selectedNames, monsters]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const selectedNumber = document?.getElementById("number")?.value;
-    setNumber(selectedNumber);
+    setLoading(true)
+    fetchMonstersByChallengeRating().then(() => {
+      setSelectedNames([])
+      setLoading(false)
+    })
+    setNumber(null);
+    const selectedNumber = document?.getElementById("number")?.value
+    setNumber(selectedNumber)
   };
 
-  const { status, data, error, isFetching } = useMonstersByChallengeRating(number);
+  const handleEncounterSubmit = (e) => {
+    setEncounter(!encounter);    
+  };
+
+  function handleNameSelection(event) {
+    const name = event.target.name;
+
+    if (selectedNames.includes(name)) {
+      setSelectedNames(selectedNames.filter((n) => n !== name));
+    } else {
+      setSelectedNames([...selectedNames, name]);
+    }
+  }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Enter a challenge rating:
-          <input className='border-2 border-black rounded-md p-2 m-2 bg-gray-100' type="text" id='number' />
-        </label>         
-        <button className='border-2 border-black rounded-md p-2 m-2' type="submit">Fetch Monsters</button>
-      </form>
-
-      {status === "loading" ? (
-        "Loading..."
-      ) : status === "error" ? (
-        <span>Error: {error.message}</span>
+      <div className="flex">
+        <form onSubmit={handleSubmit}>
+          <label>
+            Enter a challenge rating:
+            <input className='border-2 border-black rounded-md p-2 m-2 bg-gray-100' type="number" id='number' />
+          </label>         
+          <button className='border-2 border-black rounded-md p-2 m-2' type="submit">Fetch Monster Types</button>
+        </form>
+        <button onClick={handleEncounterSubmit} className='border-2 border-black rounded-md p-2 m-2' type="submit"> {encounter ? "End Encounter" : "Start Encounter"}</button>
+      </div>
+      {encounter === false ? (
+        <div>
+        {loading === true ? (
+          <InfinitySpin 
+            width='200'
+            color="#00008B"
+          />
+          ) :  
+          <div className="grid w-full column-3">
+            <div className="col-start-1">
+              <h2>Select Monsters:</h2>
+              <ul>
+                {uniqueNames.map((name) => {
+                  return (
+                    <li key={name}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name={name}
+                          checked={selectedNames.includes(name)}
+                          onChange={handleNameSelection}
+                        />
+                        {name}
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="col-start-2">
+              <h2>Selected Monsters:</h2>
+              <ul>
+                {selectedNames.map((name) => {
+                  return (
+                    <li key={name}>
+                      {name}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="col-start-3">
+              <h2>Selected Types:</h2>
+              <ul>
+                {selectedTypes.map((type) => {
+                  return (
+                    <li key={type}>
+                      {type}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        }
+      </div>
       ) : (
-    (data.count === 0 
-    ? (
-      <div>
-        No monsters at that challenge rating.
-      </div>
-    ) : (
-      <div>
-        <select
-          className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg"
-          id="types"
-        >
-          {data.map((monster) => {
-            return(
-              <option 
-                key={monster.name}
-              >
-                {monster.type}
-              </option>
-            )
-          })}
-        </select>
-        <ul>
-          {data.map((monster) => (
-            <li key={monster.name}>{monster.name}</li>
-          ))}
-        </ul>
-      </div>
-      ))
-      
+        <div>
+          <p>Code goes here</p>
+        </div>
       )}
     </div>
   )
