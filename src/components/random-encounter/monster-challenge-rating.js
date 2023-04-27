@@ -208,7 +208,7 @@ export default function ChallengeRating() {
                   </h2>
                 </div>
                   <h2>
-                    <p className="text-2xl">Conditional Immunities:</p> "{stats.conditional_immunities}"
+                    <p className="text-2xl">Conditional Immunities:</p> {stats.conditional_immunities}
                   </h2>
                   <h2>
                     <p className="text-2xl">Constitution:</p> {stats.constitution}
