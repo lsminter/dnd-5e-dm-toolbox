@@ -127,8 +127,6 @@ export default function ChallengeRating() {
       return newStats;
     });
   };
-
-  console.log({"testing": monsterStats})
   
   const handleDecrement = (index) => {
     setMonsterNumber((prevCounters) => ({
