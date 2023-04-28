@@ -12,6 +12,7 @@ export default function ChallengeRating() {
   const [loading, setLoading] = useState(false)
   const [encounter, setEncounter] = useState(false);
   const [monsterStats, setMonsterStats] = useState([])
+  const [monsterNumber, setMonsterNumber] = useState(1)
 
   const fetchMonstersByChallengeRating = useCallback((challengeRating, apiUrl = null) => {
     apiUrl = apiUrl || `https://api.open5e.com/monsters?challenge_rating=${number}`;
@@ -66,23 +67,27 @@ export default function ChallengeRating() {
   }, [selectedNames, monsters]);
   
   useEffect(() => {
-    const stats = selectedNames.reduce((acc, name) => {
+    const stats = selectedNames.reduce((acc, name, index) => {
       const monster = monsters.find((monster) => {
         return monster.name === name;
       });
       if (monster) {
-        return [...acc, monster];
+        const monsterStatNumber = monsterNumber[index] ?? 1;
+        for (let i = 0; i < monsterStatNumber; i++) {
+          acc.push(monster)
+        }
       }
       return acc;
     }, []);
-    setMonsterStats([...new Set(stats)]);
-  }, [selectedNames, monsters]);
+    setMonsterStats(stats);
+  }, [selectedNames, monsters, monsterNumber]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true)
     fetchMonstersByChallengeRating().then(() => {
       setSelectedNames([])
+      setMonsterNumber(1)
       setLoading(false)
     })
     setNumber(null);
@@ -104,13 +109,41 @@ export default function ChallengeRating() {
     }
   }
 
+  const handleIncrement = (index) => {
+    setMonsterNumber((prevCounters) => ({
+      ...prevCounters,
+      [index]: Math.max(1, (prevCounters[index] || 1) + 1),
+    }));
+
+    setMonsterStats((prevStats) => {
+      const monster = monsters.find((monster) => monster.name === prevStats[index].name);
+      if (!monster) {
+        return prevStats;
+      }
+      const newStats = [...prevStats];
+      for (let i = 0; i < monsterNumber[index]; i++) {
+        newStats.push(monster);
+      }
+      return newStats;
+    });
+  };
+
+  console.log({"testing": monsterStats})
+  
+  const handleDecrement = (index) => {
+    setMonsterNumber((prevCounters) => ({
+      ...prevCounters,
+      [index]: Math.max(1, (prevCounters[index] || 1) - 1),
+    }));
+  };
+
   return (
     <div>
       <div className="flex">
         <form onSubmit={handleSubmit}>
           <label>
             Enter a challenge rating:
-            <input className='border-2 border-black rounded-md p-2 m-2 bg-gray-100' type="number" id='number' />
+            <input placeholder="1" className='border-2 border-black rounded-md p-2 m-2 bg-gray-100' type="number" id='number' />
           </label>         
           <button className='border-2 border-black rounded-md p-2 m-2' type="submit">Fetch Monsters</button>
         </form>
@@ -154,11 +187,15 @@ export default function ChallengeRating() {
             <div className="col-start-2">
               <h2>Selected Monsters:</h2>
               <ul>
-                {selectedNames.map((name) => {
+                {selectedNames.map((name, index) => {
                   return (
-                    <li key={name}>
-                      {name}
-                    </li>
+                    <div className="flex" key={index}>
+                      <li>
+                        {name} - {monsterNumber[index] ?? 1}
+                      </li>
+                      <button className="border-2 border-black rounded-md mx-1 w-6" onClick={() => handleIncrement(index)}> + </button>
+                      <button className="border-2 border-black rounded-md w-6" onClick={() => handleDecrement(index)}> - </button>
+                    </div>
                   );
                 })}
               </ul>
@@ -185,33 +222,35 @@ export default function ChallengeRating() {
             loop through selected monsters
             display relevant stats for each monster
            */}
-           <ul className='grid grid-cols-2'>
-            {monsterStats.map((stats) => {
-              console.log(stats)
+           <ul className='grid sm:grid-cols-2 grid-cols-1'>
+            {monsterStats.map((stats, i) => {
               return (
                 <div
-                  key={stats.name} 
-                  className="grid border-solid border border-black m-4 p-6 text-left no-underline rounded-xl"
+                  key={i++} 
+                  className="grid border-solid border border-black m-4 p-6 text-left no-underline rounded-xl space-y-2"
                 >
                 <h2 className="pb-2">
-                  <p className="text-3xl">{stats.name}</p> 
+                  <p className="text-3xl">{stats.name}</p>
                 </h2>
+                <h3 className="flex">
+                  <p>{stats.type}, {stats.alignment}</p>
+                </h3>
                 <div className="flex space-x-4">
                   <h2>
-                    <p className="text-2xl">Hit Points:</p> {stats.hit_points}
+                    <p className="text-2xl">Hit Points:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 ml-2 p-1 bg-gray-100" type="number" ></input>
                   </h2>
                   <h2>
-                    <p className="text-2xl">Armor Class:</p> {stats.armor_class}
+                    <p className="text-2xl">Armor Class:</p>{stats.armor_class}
                   </h2>
                   <h2>
-                    <p className="text-2xl">Type:</p> {stats.type}
+                    <p className="text-2xl">Type:</p>{stats.type}
                   </h2>
                 </div>
                   <h2>
-                    <p className="text-2xl">Conditional Immunities:</p> {stats.conditional_immunities}
+                    <p className="text-2xl">Conditional Immunities:</p>{stats.conditional_immunities}
                   </h2>
                   <h2>
-                    <p className="text-2xl">Constitution:</p> {stats.constitution}
+                    <p className="text-2xl">Constitution:</p>{stats.constitution}
                   </h2>
                   <h2 className="space-y-2">
                     <p className="text-2xl">Actions</p> 
@@ -251,7 +290,7 @@ export default function ChallengeRating() {
   )
 }
 
-
+// Name, type, alignment, AC, HP, Speed, Stats, Skills, Senses, Languages, Challenge Rating, Proficiency Bonus, Special Abilities, Actions, Description, Spell List, 
 
 
 // actions: (4) [{…}, {…}, {…}, {…}]
