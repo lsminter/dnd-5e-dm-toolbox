@@ -109,6 +109,7 @@ export default function AllCharacterOptions() {
   return (
     <div>
       <form 
+        className="space-y-4"
         id="allValues" 
         onSubmit={handleAllOptions}
       >
@@ -123,8 +124,8 @@ export default function AllCharacterOptions() {
           width='200'
           color="#00008B"
         />
-        ) : <div>
-          <div>
+        ) : <div className="sm:flex mt-2 border-2 border-black rounded-md">
+          <div className="m-2 space-y-2">
             <h1 className="font-bold">
               {name}
             </h1>
@@ -145,16 +146,17 @@ export default function AllCharacterOptions() {
             </p>
           </div>
           {image === undefined ? (
-            <div />
+            <p>Loading Image...</p>
           ) :
             imageSpinner === true ? (
-              <p>Loading...</p>
+              <p>Loading Image...</p>
             ):(
             <Image 
             src={image}
             alt="DALL-E image of dnd character"
             width={250}
             height={250}
+            className="border-2 border-black rounded-md"
           />
           )}
         </div>
