@@ -50,7 +50,7 @@ export default function AllCharacterOptions() {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{role: "user", content: `
-      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character.`}],
+      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short, 100 characters max, character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character.`}],
     });
     setAiResponse(() => {
       return completion.data.choices[0].message.content;
@@ -146,7 +146,7 @@ export default function AllCharacterOptions() {
             </p>
           </div>
           {image === undefined ? (
-            <p>Loading Image...</p>
+            <div />
           ) :
             imageSpinner === true ? (
               <p>Loading Image...</p>
