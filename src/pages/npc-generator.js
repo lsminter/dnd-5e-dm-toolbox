@@ -1,35 +1,21 @@
-import CharacterAlignment from './character-alignment.js'
-import CharacterClass from './character-class.js'
-import CharacterRace from './character-race.js'
-import CharacterSex from './character-sex.js'
+import CharacterRace from '../components/character-options/character-race.js'
+import CharacterSex from '../components/character-options/character-sex.js'
+import JobSelect from '../components/character-options/npc-profession.js'
+import JobList from '../components/character-options/npc-job.js'
 import { useState } from 'react';
-import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
 import { InfinitySpin } from 'react-loader-spinner'
 
-export default function AllCharacterOptions() {
+export default function AllCharacterOptions({ object }) {
   const [race, setRace] = useState("Dragonborn")
-  const [characterClass, setCharacterClass] = useState("Barbarian")
-  const [alignment, setAlignment] = useState("Chaotic Evil")
   const [sex, setSex] = useState("Male")
+  const [selectedJob, setSelectedJob] = useState('');
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
-  const [imageSpinner, setImageSpinner] = useState(false)
-  const [image, setImage] = useState(undefined);
 
   const handleSelectedRace = () => {
     const selectedRace = document?.getElementById("race")?.value;
     setRace(selectedRace)
-  }
-  
-  const handleAlignment = () => {
-    const selectedAlignment = document?.getElementById("alignment")?.value;
-    setAlignment(selectedAlignment)
-  }
-  
-  const handleCharacterClass = () => {
-    const selectedClass = document?.getElementById("class")?.value;
-    setCharacterClass(selectedClass)
   }
   
   const handleCharacterSex = () => {
@@ -37,7 +23,7 @@ export default function AllCharacterOptions() {
     setSex(selectedSex)
   }
 
-  const allOptions = `The race is ${race}, the class of the character is ${characterClass}, they are ${sex}, and the alignment is ${alignment}.`
+  const allOptions = `The race is ${race}, they are ${sex}, their profession is ${selectedJob}.`
 
   const configuration = new Configuration({
     apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
@@ -49,7 +35,7 @@ export default function AllCharacterOptions() {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{role: "user", content: `
-      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short, 100 characters max, character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character.
+      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short, 100 characters max, character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character around 300 characters max.
       
       Output it like this:
       Name: First Last
@@ -62,9 +48,7 @@ export default function AllCharacterOptions() {
   }
 
   const inputString = aiResponse;
-
   const outputArray = inputString.split('\n').filter(Boolean); 
-
   const outputObject = {};
 
   for (let item of outputArray) {
@@ -80,18 +64,6 @@ export default function AllCharacterOptions() {
   const descriptionValue = outputObject[description];
   const backgroundValue = outputObject[background];
   
-  const fetchImageResponse = async () => {
-    setImage();
-    const reply = await openai.createImage({
-      prompt: `Standing on ground, digital art, 4k, ${sex}, ${race}, ${descriptionValue}.`,
-      n: 1,
-      size: "256x256",
-    })
-    setImage(() => {
-      return reply.data.data[0].url
-    })
-  }
-  
   const handleAllOptions = (e) => {
     e.preventDefault();
     setSpinner(true);
@@ -99,15 +71,6 @@ export default function AllCharacterOptions() {
     .then((data) => {
       setSpinner(false);
      })
-    .then(() => {
-      setImageSpinner(true)
-    })
-    .then(() => {
-      fetchImageResponse();
-    })
-    .then(() => {
-      setImageSpinner(false)
-    })
   }
   
   return (
@@ -118,9 +81,9 @@ export default function AllCharacterOptions() {
         onSubmit={handleAllOptions}
       >
         <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
-        <CharacterAlignment className="m-2" selectedAlignment={() => handleAlignment()}/>
-        <CharacterClass className="m-2" selectedCharacterClass={() => handleCharacterClass()}/>
         <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
+        <JobSelect onSelect={setSelectedJob} />
+        <JobList jobName={selectedJob} />
         <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
@@ -149,20 +112,6 @@ export default function AllCharacterOptions() {
               {backgroundValue}
             </p>
           </div>
-          {image === undefined ? (
-            <div />
-          ) :
-            imageSpinner === true ? (
-              <p>Loading Image...</p>
-            ):(
-            <Image 
-            src={image}
-            alt="DALL-E image of dnd character"
-            width={250}
-            height={250}
-            className="border-2 border-black rounded-md"
-          />
-          )}
         </div>
       }
     </div>

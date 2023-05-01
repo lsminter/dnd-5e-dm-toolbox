@@ -46,7 +46,6 @@ export default function ChallengeRating() {
 
   useEffect(() => {
     async function fetchData() {
-      setMonsters([])
       const result = await fetchMonstersByChallengeRating(number);
       setMonsters(result);
     }
@@ -86,14 +85,17 @@ export default function ChallengeRating() {
     e.preventDefault();
     setLoading(true)
     fetchMonstersByChallengeRating().then(() => {
-      setSelectedNames([])
-      setMonsterNumber(1)
       setLoading(false)
     })
     setNumber(null);
     const selectedNumber = document?.getElementById("number")?.value
     setNumber(selectedNumber)
   };
+
+  const handleClearingMonsters = () => {
+    setSelectedNames([])
+    setMonsterNumber(1)
+  }
 
   const handleEncounterSubmit = (e) => {
     setEncounter(!encounter);    
@@ -148,10 +150,13 @@ export default function ChallengeRating() {
         <button 
           onClick={handleEncounterSubmit} 
           className='border-2 border-black rounded-md p-2 m-2' 
-          type="submit"
         > 
           {encounter ? "Monster Selection" : "Selected Monster Stats"}
         </button>
+        <button 
+          className='border-2 border-black rounded-md p-2 m-2' 
+          onClick={handleClearingMonsters}
+        >Clear Monsters</button>
       </div>
       {encounter === false ? (
         <div>
@@ -161,54 +166,56 @@ export default function ChallengeRating() {
             color="#00008B"
           />
           ) :  
-          <div className="grid w-full column-3">
-            <div className="col-start-1">
+          <div className="grid w-full">
+            <div className="h-64">
+              <div className="grid grid-cols-2 min-h-full">
+                <div className="col-start-1">
+                  <h2>Selected Monsters:</h2>
+                  <ul className="grid grid-cols-2">
+                    {selectedNames.map((name, index) => {
+                      return (
+                        <div className="flex" key={index}>
+                          <li>
+                            {name} - {monsterNumber[index] ?? 1}
+                          </li>
+                          <button className="border-2 border-black rounded-md mx-1 w-6" onClick={() => handleIncrement(index)}> + </button>
+                          <button className="border-2 border-black rounded-md w-6" onClick={() => handleDecrement(index)}> - </button>
+                        </div>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div className="col-start-2">
+                  <h2>Selected Types:</h2>
+                  <ul className="grid grid-cols-2">
+                    {selectedTypes.map((type) => {
+                      return (
+                        <li key={type}>
+                          {type}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div>
               <h2>Select Monsters:</h2>
-              <ul>
+              <li className="grid lg:grid-cols-5 md:grid-cols-3 gap-1">
                 {uniqueNames.map((name) => {
                   return (
-                    <li key={name}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name={name}
-                          checked={selectedNames.includes(name)}
-                          onChange={handleNameSelection}
-                        />
-                        {name}
-                      </label>
-                    </li>
+                    <ul key={name} className="bg-blue-500 text-white p-4 rounded">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        checked={selectedNames.includes(name)}
+                        onChange={handleNameSelection}
+                      />
+                      {name}
+                    </ul>
                   );
                 })}
-              </ul>
-            </div>
-            <div className="col-start-2">
-              <h2>Selected Monsters:</h2>
-              <ul>
-                {selectedNames.map((name, index) => {
-                  return (
-                    <div className="flex" key={index}>
-                      <li>
-                        {name} - {monsterNumber[index] ?? 1}
-                      </li>
-                      <button className="border-2 border-black rounded-md mx-1 w-6" onClick={() => handleIncrement(index)}> + </button>
-                      <button className="border-2 border-black rounded-md w-6" onClick={() => handleDecrement(index)}> - </button>
-                    </div>
-                  );
-                })}
-              </ul>
-            </div>
-            <div className="col-start-3">
-              <h2>Selected Types:</h2>
-              <ul>
-                {selectedTypes.map((type) => {
-                  return (
-                    <li key={type}>
-                      {type}
-                    </li>
-                  );
-                })}
-              </ul>
+              </li>
             </div>
           </div>
         }
@@ -216,34 +223,44 @@ export default function ChallengeRating() {
       ) : (
         <div>
           <p className="text-2xl">Enemies</p>
-          {/* 
-            loop through selected monsters
-            display relevant stats for each monster
-           */}
-           <ul className='grid sm:grid-cols-2 grid-cols-1'>
+           <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
             {monsterStats.map((stats, i) => {
               return (
                 <div
                   key={i++} 
                   className="grid border-solid border border-black m-4 p-6 text-left no-underline rounded-xl space-y-2"
                 >
-                <h2 className="pb-2">
-                  <p className="text-3xl">{stats.name}</p>
-                </h2>
-                <h3 className="flex">
-                  <p>{stats.type}, {stats.alignment}</p>
-                </h3>
-                <div className="flex space-x-4">
-                  <h2>
-                    <p className="text-2xl">Hit Points:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 ml-2 p-1 bg-gray-100" type="number" ></input>
+                  <h2 className="pb-2">
+                    <p className="text-2xl">{stats.name}</p>
                   </h2>
-                  <h2>
-                    <p className="text-2xl">Armor Class:</p>{stats.armor_class}
-                  </h2>
-                  <h2>
-                    <p className="text-2xl">Type:</p>{stats.type}
-                  </h2>
-                </div>
+                  <h3 className="flex">
+                    <div>Type: {stats.type}, {stats.alignment === "" ? (
+                        <p>Alignment: No Alignment</p>
+                      ) : (
+                        <div>
+                        Alignment: {stats.alignment}
+                        </div>
+                      )}
+                      <div>{stats.languages === "" || stats.languages == "-" ? (
+                        <p>Languages: None Listed</p>
+                      ) : (
+                        <div>
+                        Languages: {stats.languages}
+                        </div>
+                      )}</div>
+                    </div>
+                  </h3>
+                  <div className="flex space-x-4">
+                    <h2>
+                      <p className="text-xl">HP:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 ml-2 p-1 bg-gray-100" type="number" ></input>
+                    </h2>
+                    <h2>
+                      <p className="text-2xl">Armor Class:</p>{stats.armor_class}
+                    </h2>
+                    <h2>
+                      <p className="text-2xl">Type:</p>{stats.type}
+                    </h2>
+                  </div>
                   <h2>
                     <p className="text-2xl">Conditional Immunities:</p>{stats.conditional_immunities}
                   </h2>
