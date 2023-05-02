@@ -144,24 +144,20 @@ export default function AllCharacterOptions() {
         />
         ) : 
         <div className="sm:flex mt-2">
-        {image === undefined ? (
-          <InfinitySpin 
-            width='200'
-            color="#00008B"
-          />
-          ) :
-            imageSpinner === true ? (
-              <p>Loading Image...</p>
-            ):(
-              console.log(image),
-          <Image 
-            src={image}
-            alt="DALL-E image of dnd character"
-            width={250}
-            height={250}
-            className="border-2 border-black rounded-md"
-          />
-          )}
+          {imageSpinner === true ? 
+            <InfinitySpin 
+              width='200'
+              color="#00008B"
+            />
+          : 
+            <Image 
+              src={image}
+              alt="DALL-E image of dnd character"
+              width={250}
+              height={250}
+              className="border-2 border-black rounded-md"
+            />
+          }
           <div className="m-2 space-y-2 text-white">
             <h1 className="font-bold">
               {name}
