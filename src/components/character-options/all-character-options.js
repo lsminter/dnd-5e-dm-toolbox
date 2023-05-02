@@ -6,6 +6,7 @@ import AdditionalInfo from './additional-info.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
+
 import { InfinitySpin } from 'react-loader-spinner'
 
 export default function AllCharacterOptions() {

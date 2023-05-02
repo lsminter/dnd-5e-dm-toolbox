@@ -258,7 +258,7 @@ export default function ChallengeRating() {
                   </h3>
                   <div className="flex space-x-4">
                     <h2>
-                      <p className="text-xl">HP:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 p-1 bg-gray-100" type="number" ></input>
+                      <p className="text-xl">HP:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 p-1 bg-gray-100 text-black" type="number" ></input>
                     </h2>
                     <h2>
                       <p className="text-2xl">Armor Class:</p>{stats.armor_class}
