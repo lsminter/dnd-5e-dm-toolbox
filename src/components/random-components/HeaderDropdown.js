@@ -26,7 +26,7 @@ const DropdownMenu = () => {
           isOpen ? 'block' : 'hidden'
         } group-hover:block dropdown-menu hidden h-auto`}
       >
-        <div className="top-9 w-auto bg-white shadow absolute px-3 py-4 rounded-md" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+        <div className="top-9 w-auto bg-white shadow absolute px-3 py-4 rounded-md z-10" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
           <Link href="/character-generator">
             <p
               className="block px-4 py-2 text-xs rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900"

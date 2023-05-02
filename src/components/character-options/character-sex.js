@@ -24,15 +24,16 @@ function CharacterSex({ selectedSex }) {
           ) : (
             <>
               <div>
-              <p className="text-center">Select Sex</p>
+              <p className="text-center">Select Appeared Sex</p>
               <select
-                className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg"
+                className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg w-full"
                 id='sex'
                 onChange={selectedSex}
               >
                 {data.map((option) => {
                   return(
                     <option 
+                      className="text-center"
                       id={option.sex}
                       key={option.sex}
                       value={option.sex}

@@ -28,13 +28,16 @@ function CharacterRace({ selectedRace }) {
             <div>
             <p className="text-center">Select Race</p>
             <select
-              className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg"
+            //center the select
+            
+              className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg w-full"
               id='race'
               onChange={selectedRace}
             >
               {data.results.map((option) => {
                 return(
                   <option 
+                    className="text-center"
                     id={option.name}
                     key={option.name}
                     value={option.name}

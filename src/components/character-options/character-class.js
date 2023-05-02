@@ -28,13 +28,14 @@ function CharacterClass({ selectedCharacterClass }) {
             <div>
             <p className="text-center">Select Class</p>
             <select
-              className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg"
+              className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg w-full"
               id="class"
               onChange={selectedCharacterClass}
             >
               {data.results.map((option) => {
                 return(
                   <option 
+                    className="text-center"
                     key={option.name}
                   >
                     {option.name}

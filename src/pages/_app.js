@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <div className="min-h-screen bg-white text-black p-4">
+    <div className="min-h-screen bg-gradient-to-b from-red-900 from-60% to-black text-black p-4">
       <QueryClientProvider client={queryClient}>
         <Header />
         <Component {...pageProps} />

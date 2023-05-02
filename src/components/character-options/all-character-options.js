@@ -2,6 +2,7 @@ import CharacterAlignment from './character-alignment.js'
 import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
 import CharacterSex from './character-sex.js'
+import AdditionalInfo from './additional-info.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
@@ -12,6 +13,7 @@ export default function AllCharacterOptions() {
   const [characterClass, setCharacterClass] = useState("Barbarian")
   const [alignment, setAlignment] = useState("Chaotic Evil")
   const [sex, setSex] = useState("Male")
+  const [additionalInfo, setAdditionalInfo] = useState("")
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
   const [imageSpinner, setImageSpinner] = useState(false)
@@ -36,8 +38,15 @@ export default function AllCharacterOptions() {
     const selectedSex = document?.getElementById("sex")?.value;
     setSex(selectedSex)
   }
+  
+  const handleAdditionalInfo = () => {
+    const selectedAdditionalInfo = document?.getElementById("info")?.value;
+    setAdditionalInfo(selectedAdditionalInfo)
+  }
 
-  const allOptions = `The race is ${race}, the class of the character is ${characterClass}, they are ${sex}, and the alignment is ${alignment}.`
+  console.log(additionalInfo)
+
+  const allOptions = `The race is ${race}, the class of the character is ${characterClass}, they are ${sex}, and the alignment is ${alignment}. This is the additional info: ${additionalInfo}.`
 
   const configuration = new Configuration({
     apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
@@ -117,10 +126,15 @@ export default function AllCharacterOptions() {
         id="allValues" 
         onSubmit={handleAllOptions}
       >
+      <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
         <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
         <CharacterAlignment className="m-2" selectedAlignment={() => handleAlignment()}/>
         <CharacterClass className="m-2" selectedCharacterClass={() => handleCharacterClass()}/>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
         <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
+        <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
+      </div>
         <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
@@ -128,8 +142,27 @@ export default function AllCharacterOptions() {
           width='200'
           color="#00008B"
         />
-        ) : <div className="sm:flex mt-2 border-2 border-black rounded-md">
-          <div className="m-2 space-y-2">
+        ) : 
+        <div className="sm:flex mt-2">
+        {image === undefined ? (
+          <InfinitySpin 
+            width='200'
+            color="#00008B"
+          />
+          ) :
+            imageSpinner === true ? (
+              <p>Loading Image...</p>
+            ):(
+              console.log(image),
+          <Image 
+            src={image}
+            alt="DALL-E image of dnd character"
+            width={250}
+            height={250}
+            className="border-2 border-black rounded-md"
+          />
+          )}
+          <div className="m-2 space-y-2 text-white">
             <h1 className="font-bold">
               {name}
             </h1>
@@ -149,20 +182,6 @@ export default function AllCharacterOptions() {
               {backgroundValue}
             </p>
           </div>
-          {image === undefined ? (
-            <div />
-          ) :
-            imageSpinner === true ? (
-              <p>Loading Image...</p>
-            ):(
-            <Image 
-            src={image}
-            alt="DALL-E image of dnd character"
-            width={250}
-            height={250}
-            className="border-2 border-black rounded-md"
-          />
-          )}
         </div>
       }
     </div>
