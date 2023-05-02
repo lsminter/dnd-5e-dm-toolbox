@@ -104,7 +104,7 @@ export default function AllCharacterOptions({ object }) {
           color="#00008B"
         />
         ) : <div className="sm:flex mt-2">
-          <div className="m-2 space-y-2">
+          <div className="m-2 space-y-2 text-gray-200">
             <h1 className="font-bold">
               {name}
             </h1>

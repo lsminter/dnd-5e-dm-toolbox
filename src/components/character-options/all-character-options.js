@@ -92,7 +92,7 @@ export default function AllCharacterOptions() {
   const fetchImageResponse = async () => {
     setImage();
     const reply = await openai.createImage({
-      prompt: `Head only facing camera, digital art, 4k, ${sex}, ${race}, ${descriptionValue}.`,
+      prompt: `Head only facing camera, D&D Classic Style, 4k, ${sex}, ${race}, ${descriptionValue}.`,
       n: 1,
       size: "256x256",
     })
@@ -158,7 +158,7 @@ export default function AllCharacterOptions() {
               className="border-2 border-black rounded-md"
             />
           }
-          <div className="m-2 space-y-2 text-white">
+          <div className="m-2 space-y-2 text-gray-200">
             <h1 className="font-bold">
               {name}
             </h1>

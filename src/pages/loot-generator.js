@@ -69,10 +69,9 @@ export default function Home() {
           </button>
       </div>
       <div className="flex flex-col">
-        <h1 className="text-3xl pr-2">Loot: </h1>
         {lootArray.map((item) => {
           return(
-            <p key={item} className="text-lg text-gray-300 pr-2">{item}</p>
+            <p key={item} className="text-lg text-gray-200 pr-2">{item}</p>
           )
         })}
       </div>

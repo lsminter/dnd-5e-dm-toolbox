@@ -139,24 +139,26 @@ export default function ChallengeRating() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="sm:flex grid grid-col-1">
         <form onSubmit={handleSubmit}>
           <label>
             Enter a challenge rating:
-            <input placeholder="1" className='border-2 border-black rounded-md p-2 m-2 bg-gray-100' type="number" id='number' />
+            <input placeholder="1" className='border-2 border-black rounded-md p-2 m-2 bg-gray-400' type="number" id='number' />
           </label>         
-          <button className='border-2 border-black rounded-md p-2 m-2' type="submit">Fetch Monsters</button>
+          <button className='border-2 border-black rounded-md md:w-auto w-full bg-gray-400 p-2 m-2' type="submit">Fetch Monsters</button>
         </form>
-        <button 
-          onClick={handleEncounterSubmit} 
-          className='border-2 border-black rounded-md p-2 m-2' 
-        > 
-          {encounter ? "Monster Selection" : "Selected Monster Stats"}
-        </button>
-        <button 
-          className='border-2 border-black rounded-md p-2 m-2' 
-          onClick={handleClearingMonsters}
-        >Clear Monsters</button>
+        <div className="sm:flex space-x-2 grid grid-cols-2">
+          <button 
+            onClick={handleEncounterSubmit} 
+            className='border-2 border-black rounded-md md:w-auto bg-gray-400 p-2 m-2' 
+          > 
+            {encounter ? "Monster Selection" : "Selected Monster Stats"}
+          </button>
+          <button 
+            className='border-2 border-black rounded-md md:w-auto bg-gray-400 p-2 m-2' 
+            onClick={handleClearingMonsters}
+          >Clear Monsters</button>
+        </div>
       </div>
       {encounter === false ? (
         <div>
@@ -166,28 +168,50 @@ export default function ChallengeRating() {
             color="#00008B"
           />
           ) :  
-          <div className="grid w-full">
-            <div className="h-64">
-              <div className="grid grid-cols-2 min-h-full">
-                <div className="col-start-1">
-                  <h2>Selected Monsters:</h2>
-                  <ul className="grid grid-cols-2">
+          <div className="grid w-full grid-cols-2 text-white">
+            <div>
+              <h2>Select Monsters:</h2>
+              <li className="grid lg:grid-cols-3 md:grid-cols-2 gap-1 mr-2 break-words">
+                {uniqueNames.map((name) => {
+                  return (
+                    <ul key={name} className="bg-gray-400 text-black p-4 rounded">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        checked={selectedNames.includes(name)}
+                        onChange={handleNameSelection}
+                        className="text-gray-300"
+                      />
+                      {name}
+                    </ul>
+                  );
+                })}
+              </li>
+            </div>
+            <div>
+              <div className="grid grid-cols-1 ml-4">
+                <div>
+                  <h2 className="text-2xl text-center">Selected Monsters:</h2>
+                  <ul>
                     {selectedNames.map((name, index) => {
                       return (
-                        <div className="flex" key={index}>
+                        <div className="flex w-full justify-between" key={index}>
                           <li>
-                            {name} - {monsterNumber[index] ?? 1}
+                            {name}
                           </li>
-                          <button className="border-2 border-black rounded-md mx-1 w-6" onClick={() => handleIncrement(index)}> + </button>
-                          <button className="border-2 border-black rounded-md w-6" onClick={() => handleDecrement(index)}> - </button>
+                          <div className="justify-end">
+                          {monsterNumber[index] ?? 1}
+                            <button className="border-2 border-black rounded-md mx-1 w-6" onClick={() => handleIncrement(index)}> + </button>
+                            <button className="border-2 border-black rounded-md w-6" onClick={() => handleDecrement(index)}> - </button>
+                          </div>
                         </div>
                       );
                     })}
                   </ul>
                 </div>
-                <div className="col-start-2">
-                  <h2>Selected Types:</h2>
-                  <ul className="grid grid-cols-2">
+                <div>
+                  <h2 className="text-2xl mt-6 text-center">Selected Types:</h2>
+                  <ul className="text-center grid grid-cols-2">
                     {selectedTypes.map((type) => {
                       return (
                         <li key={type}>
@@ -199,31 +223,13 @@ export default function ChallengeRating() {
                 </div>
               </div>
             </div>
-            <div>
-              <h2>Select Monsters:</h2>
-              <li className="grid lg:grid-cols-5 md:grid-cols-3 gap-1">
-                {uniqueNames.map((name) => {
-                  return (
-                    <ul key={name} className="bg-blue-500 text-white p-4 rounded">
-                      <input
-                        type="checkbox"
-                        name={name}
-                        checked={selectedNames.includes(name)}
-                        onChange={handleNameSelection}
-                      />
-                      {name}
-                    </ul>
-                  );
-                })}
-              </li>
-            </div>
           </div>
         }
       </div>
       ) : (
         <div>
           <p className="text-2xl">Enemies</p>
-           <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+           <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-white'>
             {monsterStats.map((stats, i) => {
               return (
                 <div
@@ -252,7 +258,7 @@ export default function ChallengeRating() {
                   </h3>
                   <div className="flex space-x-4">
                     <h2>
-                      <p className="text-xl">HP:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 ml-2 p-1 bg-gray-100" type="number" ></input>
+                      <p className="text-xl">HP:</p>{stats.hit_points}<input placeholder={stats.hit_points} className="w-12 p-1 bg-gray-100" type="number" ></input>
                     </h2>
                     <h2>
                       <p className="text-2xl">Armor Class:</p>{stats.armor_class}
