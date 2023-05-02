@@ -92,7 +92,7 @@ export default function AllCharacterOptions() {
   const fetchImageResponse = async () => {
     setImage();
     const reply = await openai.createImage({
-      prompt: `Standing on ground, digital art, 4k, ${sex}, ${race}, ${descriptionValue}.`,
+      prompt: `Head only facing camera, digital art, 4k, ${sex}, ${race}, ${descriptionValue}.`,
       n: 1,
       size: "256x256",
     })
@@ -120,7 +120,7 @@ export default function AllCharacterOptions() {
   }
   
   return (
-    <div>
+    <div className="mt-2">
       <form 
         className="space-y-4"
         id="allValues" 
@@ -151,7 +151,7 @@ export default function AllCharacterOptions() {
             />
           : 
             <Image 
-              src={image}
+              src={image || "/dnd-logo.png"}
               alt="DALL-E image of dnd character"
               width={250}
               height={250}

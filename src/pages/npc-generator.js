@@ -2,6 +2,7 @@ import CharacterRace from '../components/character-options/character-race.js'
 import CharacterSex from '../components/character-options/character-sex.js'
 import JobSelect from '../components/character-options/npc-profession.js'
 import JobList from '../components/character-options/npc-job.js'
+import AdditionalInfo from '../components/character-options/additional-info.js'
 import { useState } from 'react';
 import { Configuration, OpenAIApi } from 'openai';
 import { InfinitySpin } from 'react-loader-spinner'
@@ -12,6 +13,7 @@ export default function AllCharacterOptions({ object }) {
   const [selectedJob, setSelectedJob] = useState('');
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
+  const [additionalInfo, setAdditionalInfo] = useState("")
 
   const handleSelectedRace = () => {
     const selectedRace = document?.getElementById("race")?.value;
@@ -23,7 +25,12 @@ export default function AllCharacterOptions({ object }) {
     setSex(selectedSex)
   }
 
-  const allOptions = `The race is ${race}, they are ${sex}, their profession is ${selectedJob}.`
+  const handleAdditionalInfo = () => {
+    const selectedAdditionalInfo = document?.getElementById("info")?.value;
+    setAdditionalInfo(selectedAdditionalInfo)
+  }
+
+  const allOptions = `The race is ${race}, they are ${sex}, their profession is ${selectedJob}, additional info ${additionalInfo}.`
 
   const configuration = new Configuration({
     apiKey: process.env.NEXT_PUBLIC_AI_TOKEN,
@@ -74,16 +81,21 @@ export default function AllCharacterOptions({ object }) {
   }
   
   return (
-    <div>
+    <div className="mt-4">
       <form 
         className="space-y-4"
         id="allValues" 
         onSubmit={handleAllOptions}
       >
-        <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
-        <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
-        <JobSelect onSelect={setSelectedJob} />
-        <JobList jobName={selectedJob} />
+        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
+          <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
+          <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
+          <JobSelect onSelect={setSelectedJob} />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
+          <JobList jobName={selectedJob} />
+          <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
+        </div>
         <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
@@ -91,7 +103,7 @@ export default function AllCharacterOptions({ object }) {
           width='200'
           color="#00008B"
         />
-        ) : <div className="sm:flex mt-2 border-2 border-black rounded-md">
+        ) : <div className="sm:flex mt-2">
           <div className="m-2 space-y-2">
             <h1 className="font-bold">
               {name}

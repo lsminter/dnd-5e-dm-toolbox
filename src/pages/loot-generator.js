@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {useQuery} from "react-query";
 import rollTable from '../components/loot-generator/loot-functions.js'
 
 
@@ -22,11 +21,11 @@ export default function Home() {
 
   return (
     <div>
-      <h1 className="text-3xl text-center font-bold underline mb-6">
+      <h1 className="text-3xl text-center font-bold underline my-4">
         Loot Generator
       </h1>
       <div>
-        <h2 className="text-3xl">Treasure Hoard Challenge</h2>
+        <h2 className="text-3xl">Treasure Hoard Challenge (Individual Loot Table to come)</h2>
           <div className="relative inline-block my-4 text-lg">
             Loot Table: 
             <select 
@@ -69,15 +68,13 @@ export default function Home() {
             Roll Items
           </button>
       </div>
-      <div className="flex">
-        <div className="flex flex-col">
-          <h1 className="text-3xl pr-2">Loot: </h1>
-          {lootArray.map((item) => {
-            return(
-              <p key={item} className="text-lg pr-2">{item}</p>
-            )
-          })}
-        </div>
+      <div className="flex flex-col">
+        <h1 className="text-3xl pr-2">Loot: </h1>
+        {lootArray.map((item) => {
+          return(
+            <p key={item} className="text-lg text-gray-300 pr-2">{item}</p>
+          )
+        })}
       </div>
     </div>
   )
