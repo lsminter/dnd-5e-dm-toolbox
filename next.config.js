@@ -4,6 +4,10 @@ const nextConfig = {
 }
 
 module.exports = {
+  env: {
+    supbaseUrl: 'https://xnvgdrmuzdxwuhmejsrz.supabase.co',
+    supabaseApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhudmdkcm11emR4d3VobWVqc3J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMxNDgwOTgsImV4cCI6MTk5ODcyNDA5OH0.TxXfvfZykWSgvkY5fq2NMotpWgFKQrE-mi_Vz_sXjUg'
+  },
   images: {
     remotePatterns: [
       {

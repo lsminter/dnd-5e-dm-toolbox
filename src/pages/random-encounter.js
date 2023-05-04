@@ -1,4 +1,4 @@
-import RandomEncounter from '../components/random-encounter/random-monsters.js'
+import SelectedMonsterStats from '../components/random-encounter/selected-monster-stats.js'
 
 export default function EncounterPage(props) {
   return (
@@ -7,7 +7,7 @@ export default function EncounterPage(props) {
         Random Encounter
       </h1>
 
-      <RandomEncounter />
+      <SelectedMonsterStats />
     </div>
   )
 }
