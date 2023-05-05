@@ -3,11 +3,112 @@ import CharacterClass from './character-class.js'
 import CharacterRace from './character-race.js'
 import CharacterSex from './character-sex.js'
 import AdditionalInfo from './additional-info.js'
+import CharacterSheet from '../character-sheet/characterSheet.js'
 import { useState } from 'react';
 import Image from 'next/image'
 import { Configuration, OpenAIApi } from 'openai';
-
 import { InfinitySpin } from 'react-loader-spinner'
+
+const character = {
+  name: 'Thoronar',
+  level: 5,
+  race: 'Dwarf',
+  class: 'Cleric',
+  abilities: {
+    strength: 15,
+    dexterity: 12,
+    constitution: 16,
+    intelligence: 10,
+    wisdom: 18,
+    charisma: 8,
+  },
+  skills: [
+    {
+      name: 'Athletics',
+      value: 4,
+    },
+    {
+      name: 'Insight',
+      value: 7,
+    },
+    {
+      name: 'Religion',
+      value: 3,
+    },
+  ],
+  background: 'Acolyte',
+  alignment: 'Lawful Good',
+  playerName: 'John Doe',
+  combat: {
+    armorClass: 18,
+    initiative: 1,
+    speed: 25,
+    hitPoints: 40,
+  },
+  equipment: [
+    {
+      name: 'Mace',
+      quantity: 1,
+    },
+    {
+      name: 'Shield',
+      quantity: 1,
+    },
+    {
+      name: 'Chain Mail',
+      quantity: 1,
+    },
+    {
+      name: 'Holy Symbol',
+      quantity: 1,
+    },
+    {
+      name: 'Backpack',
+      quantity: 1,
+    },
+    {
+      name: 'Bedroll',
+      quantity: 1,
+    },
+    {
+      name: 'Blanket',
+      quantity: 1,
+    },
+    {
+      name: 'Candle',
+      quantity: 10,
+    },
+    {
+      name: 'Chain',
+      quantity: 10,
+    },
+    {
+      name: 'Chalk',
+      quantity: 10,
+    },
+    {
+      name: 'Chest',
+      quantity: 1,
+    },
+    {
+      name: 'Crowbar',
+      quantity: 1,
+    },
+    {
+      name: 'Flask',
+      quantity: 1,
+    },
+    {
+      name: 'Flint and Steel',
+      quantity: 1,
+    },
+    {
+      name: 'Grappling Hook',
+      quantity: 1,
+    }
+  ]
+};
+
 
 export default function AllCharacterOptions() {
   const [race, setRace] = useState("Dragonborn")
@@ -181,6 +282,7 @@ export default function AllCharacterOptions() {
           </div>
         </div>
       }
+      <CharacterSheet character={character} />
     </div>
   )
 }
