@@ -282,6 +282,7 @@ export default function AllCharacterOptions() {
           </div>
         </div>
       }
+      The text for the character sheet below is hard coded. I plan to add a way to pull the data from the AI response as well as build out full sheets.
       <CharacterSheet character={character} />
     </div>
   )
