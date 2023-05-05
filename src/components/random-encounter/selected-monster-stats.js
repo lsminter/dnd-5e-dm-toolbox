@@ -84,7 +84,7 @@ const SelectedMonsterStats = () => {
             value={challengeRating}
             onChange={(e) => setChallengeRating(e.target.value)}
             placeholder="CR"
-            className="w-10 pl-1 mx-3"
+            className="w-10 pl-1 mx-3 text-white"
           />
           <button className="px-2 w-full border border-gray-400 hover:bg-gray-500 bg-gray-400 rounded-md" onClick={fetchMonsters}>Fetch Monsters</button>
         </div>
