@@ -4,9 +4,6 @@ export default function Home() {
 
   return (
     <div className="text-center">
-      <h1 className="text-3xl text-center font-bold underline mb-6 mt-4">
-        Welcome to 5e DM ToolBox!
-      </h1>
       <h2 className="mb-10 font-bold">
         Listed below are the current tools I have. 
       </h2>
