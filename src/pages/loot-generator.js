@@ -10,12 +10,12 @@ export default function Home() {
     setLoot(rollTable(selectedLootTable))
   }
 
-  const handleLoot = (e) => {
-    e.preventDefault();
+  const handleLoot = () => {
+    setLoot("");
     rollingTableLoot();
   }
 
-  const lootArray = loot.split(',')
+  const lootArray = loot.split(', ')
   
   // 0-4, 5-10, 11-16, >17
 
@@ -28,50 +28,50 @@ export default function Home() {
         <h2 className="text-3xl">Treasure Hoard Challenge (Individual Loot Table to come)</h2>
           <div className="relative inline-block my-4 text-lg">
             Loot Table: 
-            <select 
-              id="lootTable"
-              className="ml-2 border border-gray-400 bg-gray-400 rounded-md">
-              <option 
-                id='0-4'
-                key='0-4'
-                value='2'
-              >
-                0-4
-              </option>
-              <option 
-                id='5-10'
-                key='5-10'
-                value='6'
-              >
-                5-10
-              </option>
-              <option 
-                id='11-16'
-                key='11-16'
-                value='13'
-              >
-                11-16
-              </option>
-              <option 
-                id='17+'
-                key='17+'
-                value='17'
-              >
-                17+
-              </option>
-            </select>
-          </div>
-          <button
-            className="mx-2 px-2 border border-gray-400 bg-gray-400 rounded-md" 
-            onClick={(e) => handleLoot(e)}
-          >
-            Roll Items
-          </button>
+          <select 
+            id="lootTable"
+            className="ml-2 border border-gray-400 bg-gray-400 rounded-md">
+            <option 
+              id='0-4'
+              key='0-4'
+              value='2'
+            >
+              0-4
+            </option>
+            <option 
+              id='5-10'
+              key='5-10'
+              value='6'
+            >
+              5-10
+            </option>
+            <option 
+              id='11-16'
+              key='11-16'
+              value='13'
+            >
+              11-16
+            </option>
+            <option 
+              id='17+'
+              key='17+'
+              value='17'
+            >
+              17+
+            </option>
+          </select>
+        </div>
+        <button
+          className="mx-2 px-2 border border-gray-400 bg-gray-400 rounded-md" 
+          onClick={handleLoot}
+        >
+          Roll Items
+        </button>
       </div>
       <div className="flex flex-col">
-        {lootArray.map((item) => {
+        {lootArray.map((item, i) => {
           return(
-            <p key={item} className="text-lg text-gray-200 pr-2">{item}</p>
+            <p key={i} className="text-lg text-gray-200 pr-2">{item}</p>
           )
         })}
       </div>
