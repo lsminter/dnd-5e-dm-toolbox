@@ -146,8 +146,6 @@ export default function AllCharacterOptions() {
     setAdditionalInfo(selectedAdditionalInfo)
   }
 
-  console.log(additionalInfo)
-
   const allOptions = `The race is ${race}, the class of the character is ${characterClass}, they are ${sex}, and the alignment is ${alignment}. This is the additional info: ${additionalInfo}.`
 
   const configuration = new Configuration({
