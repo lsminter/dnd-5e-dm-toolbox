@@ -4,6 +4,7 @@ import {supabase} from '../utils/supabase';
 const Context = createContext();
 
 const UserProvider = ({ children }) => {
+  console.log(supabase.auth)
   const [user, setUser] = useState(supabase.auth);
 
   useEffect(() => {

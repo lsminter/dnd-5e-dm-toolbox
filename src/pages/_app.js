@@ -1,4 +1,4 @@
-import '@/styles/globals.css'
+import '../styles/globals.css'
 import Header from '../components/random-components/Header.js'
 import {useState} from 'react'
 import {
@@ -6,13 +6,13 @@ import {
   QueryClientProvider,
 } from 'react-query'
 import { Analytics } from '@vercel/analytics/react';
-import { supabase } from '../../utils/supabase';
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 
 export default function App({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient());
-  const [supabaseClient] = useState(() => supabase)
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
     <SessionContextProvider
