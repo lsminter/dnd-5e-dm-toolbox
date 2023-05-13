@@ -8,15 +8,23 @@ const SavedPCs = () => {
 
   useEffect(() => {
     console.log({user: user})
+  }, [user])
+
+  useEffect(() => {
+    console.log({user: user})
     const savedPCs = async () => {
       const { data, error } = await supabase
-        .from('premium_content')
-        .select('pc_id')
+        .from('pc_characters')
+        .select('pc_name')
         .eq('id', user.id)
-        .single()
-        console.log(data, error)
-  
-      setCharacterName(data?.pc_id)
+
+      const allPcNames = new Set()
+      
+      data.forEach((pcs) => {
+        allPcNames.add(pcs.pc_name)
+      })
+      console.log(allPcNames)
+      setCharacterName(allPcNames)
     }
 
     savedPCs()

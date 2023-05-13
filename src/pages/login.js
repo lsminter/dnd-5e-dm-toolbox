@@ -1,19 +1,17 @@
 import {useEffect} from 'react'
-import {useRouter} from 'next/router'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import useRouter from 'next/router'
 
 const Login = () => {
-  const router = useRouter()
-  const supabase = useSupabaseClient()
+  const router = useRouter
 
   useEffect(() => {
-    supabase.auth.signInWithOAuth({
-      provider: 'github'
-    })
-    router.push("/profile")
-  }, [router, supabase])
+    const login = () => {
+      router.push("/profile")
+    }
+    login()
+  })
 
-  return <p>Login</p>
+  return <p>Logging In</p>
 }
 
 export default Login;

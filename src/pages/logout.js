@@ -14,7 +14,7 @@ const Logout = () => {
     logout()
   }, [router, supabase])
 
-  return <p>Logout</p>
+  return <p>Logging out</p>
 }
 
 export default Logout;

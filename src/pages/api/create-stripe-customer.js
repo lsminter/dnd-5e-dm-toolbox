@@ -1,7 +1,8 @@
 import initStripe from 'stripe';
-import {supabase} from '../../../utils/supabase.js';
+import { getServiceSupabase } from '../../../utils/supabaseClient';
 
 const handler = async (req, res) => {
+  const supabase = getServiceSupabase();
   if (req.query.API_ROUTE_SECRET !== process.env.API_ROUTE_SECRET) {
     return res.status(401).send({ message: 'You are not authorized to call this API' });
   }

@@ -24,8 +24,6 @@ const Profile = () => {
           ...profile
         })
       }
-
-
     }
     fetchData()
     
@@ -37,7 +35,7 @@ const Profile = () => {
         redirectTo="http://localhost:3000/profile"
         appearance={{ theme: ThemeSupa }}
         supabaseClient={supabase}
-        providers={['google', 'github']}
+        providers={['google']}
         socialLayout="horizontal"
       />
     )
