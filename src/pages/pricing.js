@@ -4,6 +4,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import axios from 'axios'
 import {loadStripe} from '@stripe/stripe-js'
+import Link from 'next/link';
 
 const Pricing = ({plans}) => {
   const [userData, setUserData] = useState('defined')
@@ -64,7 +65,7 @@ const Pricing = ({plans}) => {
             <div>
               {showCreateAccountButton && <button onClick={login}>Create Account</button>}
               {showSubscribeButton && <button onClick={processSubscription(plan.id)}>Subscribe</button>}
-              {showManageSubscriptionButton && <button>Manage Subscription</button>}
+              {showManageSubscriptionButton && <Link href="/profile">Manage Subscription</Link>}
             </div>
           )}
         </div>

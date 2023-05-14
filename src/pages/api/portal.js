@@ -8,8 +8,6 @@ const handler = async (req, res) => {
     data: {user} 
   } = await supabase.auth.getUser();
 
-  console.log(user)
-
   if (!user) {
     return res.status(401).send("Unauthorized");
   }
@@ -21,24 +19,14 @@ const handler = async (req, res) => {
     .single();
 
   const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
-  const { priceId } = req.query;
-  const lineItems = [{
-    price: priceId,
-    quantity: 1,
-  }]
-
-  const session = await stripe.checkout.sessions.create({
+  const session = await stripe.billingPortal.sessions.create({
     customer: stripe_customer,
-    mode: "subscription",
-    payment_method_types: ["card"],
-    line_items: lineItems,
-    success_url: 'http://localhost:3000/payment/success',
-    cancel_url: 'http://localhost:3000/payment/cancelled',
-  });
+    return_url: 'http://localhost:3000/profile',
+  })
 
   res.send({
-    id: session.id
-  });
-};
+    url: session.url
+  })
+}
 
 export default handler;

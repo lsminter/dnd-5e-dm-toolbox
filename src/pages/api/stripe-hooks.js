@@ -33,9 +33,25 @@ const handler = async (req, res) => {
         })
         .eq("stripe_customer", event.data.object.customer);
       break;
+    case "customer.subscription.updated":
+      await supabase
+        .from("profile")
+        .update({
+          is_subscribed: true,
+          interval: event.data.object.items.data[0].plan.interval,
+        })
+        .eq("stripe_customer", event.data.object.customer);
+      break;
+    case "customer.subscription.deleted":
+      await supabase
+        .from("profile")
+        .update({
+          is_subscribed: false,
+          interval: null
+        })
+        .eq("stripe_customer", event.data.object.customer);
+      break;
   }
-
-  console.log({event});
   
   res.send({ received: true});
 };

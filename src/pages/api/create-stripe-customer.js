@@ -1,8 +1,9 @@
 import initStripe from 'stripe';
-import { getServiceSupabase } from '../../../utils/supabaseClient';
+import { getServiceSupabase } from "../../../utils/supabaseClient";
 
 const handler = async (req, res) => {
   const supabase = getServiceSupabase();
+
   if (req.query.API_ROUTE_SECRET !== process.env.API_ROUTE_SECRET) {
     return res.status(401).send({ message: 'You are not authorized to call this API' });
   }
@@ -17,7 +18,6 @@ const handler = async (req, res) => {
   }).eq('id', req.body.record.id);
 
   res.send({ message: `stripe customer created: ${customer.id}` });
-
 }
 
 export default handler;

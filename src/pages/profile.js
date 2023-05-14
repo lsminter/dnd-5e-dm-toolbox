@@ -2,12 +2,17 @@ import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+
 import SavedPCs from '../components/profiles/pcCharacter'
 
 const Profile = () => {
+  const router = useRouter()
   const user = useUser()
   const supabase = useSupabaseClient()
   const [userData, setUserData] = useState()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,31 +28,38 @@ const Profile = () => {
           ...user,
           ...profile
         })
+        setLoading(false)
       }
     }
     fetchData()
     
   }, [supabase, user])
 
-  if (!user)
-    return (
-      <Auth
-        redirectTo="http://localhost:3000/profile"
-        appearance={{ theme: ThemeSupa }}
-        supabaseClient={supabase}
-        providers={['google']}
-        socialLayout="horizontal"
-      />
-    )
+  const loadPortal = async () => {
+    const { data } = await axios.get('/api/portal');
+    router.push(data.url)
+  }
 
   return (
     <div className="text-white">
-      <SavedPCs />
-      <button onClick={() => supabase.auth.signOut()}>Sign out</button>
-      <p>user:</p>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-      <p>client-side data fetching with RLS</p>
-      <pre>{JSON.stringify(userData, null, 2)}</pre>
+      <div>
+        {!user && 
+          <Auth
+            redirectTo="http://localhost:3000/profile"
+            appearance={{ theme: ThemeSupa }}
+            supabaseClient={supabase}
+            providers={['google']}
+            socialLayout="horizontal"
+          />
+        }
+      </div>
+      {!loading && (   
+        <div className="flex flex-col items-center">
+          <SavedPCs />
+          {userData?.is_subscribed ? `Subscribed: ${userData?.interval}` : `Not Subscribed`}
+          <button onClick={loadPortal}>Manage Subscription</button>
+        </div>
+      )}
     </div>
   )
 }

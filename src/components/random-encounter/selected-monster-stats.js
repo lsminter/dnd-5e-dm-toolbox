@@ -162,7 +162,6 @@ const SelectedMonsterStats = () => {
                 <h2>
                   Conditional Immunities:
                   <h3 className="text-sm">
-                  {console.log(monster.condition_immunities)}
                     {monster.conditional_immunities === "" || monster.conditional_immunities == "-" || monster.conditional_immunities == undefined ? (
                       <p className="text-sm">None Listed</p>
                     ) : (
