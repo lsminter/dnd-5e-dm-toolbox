@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import Header from '../components/random-components/Header.js'
+import Footer from '../components/random-components/Footer.js'
 import {useState} from 'react'
 import {
   QueryClient,
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps }) {
         <QueryClientProvider client={queryClient}>
           <Header />
           <Component {...pageProps} />
+          <Footer />
         </QueryClientProvider>
         <Analytics />
       </div>
