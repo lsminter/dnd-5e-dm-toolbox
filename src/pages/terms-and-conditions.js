@@ -1,5 +1,5 @@
 const Terms = () => {
-  return <div className="text-white"> 
+  return <div className="text-white min-h-screen"> 
   <h2 className="text-4xl">Terms and Conditions</h2>
   <p>
   Please read these Terms and Conditions (&quot;Terms&quot;, &quot;Terms and Conditions&quot;) carefully before using the https://www.dmtoolbox.app/ website (the &quot;Service&quot;) operated by DMToolbox (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).

@@ -42,7 +42,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="text-white">
+    <div className="min-h-screen text-white">
       <div>
         {!user && 
           <Auth
