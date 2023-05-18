@@ -5,7 +5,6 @@ import { getServiceSupabase } from '../../../utils/supabaseClient';
 export const config = { api: { bodyParser: false } };
 
 const handler = async (req, res) => {  
-  // const supabase = createServerSupabaseClient({ req, res });
   const stripe = initStripe(process.env.STRIPE_SECRET_KEY);
   const signature = req.headers['stripe-signature'];
   const signingSecret = process.env.STRIPE_SIGNING_SECRET;

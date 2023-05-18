@@ -4,6 +4,7 @@ import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import SavedPCs from '../components/profiles/pcCharacter'
 
@@ -54,10 +55,21 @@ const Profile = () => {
         }
       </div>
       {!loading && (   
-        <div className="flex flex-col items-center">
-          <SavedPCs />
-          {userData?.is_subscribed ? `Subscribed: ${userData?.interval}` : `Not Subscribed`}
-          <button onClick={loadPortal}>Manage Subscription</button>
+        <div className="flex flex-col items-center text-center">
+          <SavedPCs subscribed={userData?.is_subscribed}/>
+          {
+            userData?.is_subscribed
+          ? 
+            <div className="text-center">
+              <p>Subscribed: ${userData?.interval}</p>
+              <button onClick={loadPortal}>Manage Subscription</button>
+            </div>
+          : 
+            <div className="text-center">
+              <p>Not Subscribed</p>
+              <Link href="/pricing" className="hover:text-purple-400">Click to go to pricing</Link>
+            </div>
+          }
         </div>
       )}
     </div>

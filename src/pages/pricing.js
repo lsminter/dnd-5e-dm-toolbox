@@ -9,7 +9,6 @@ import Link from 'next/link';
 const Pricing = ({plans}) => {
   const [userData, setUserData] = useState('defined')
   const [loading, setLoading] = useState(true)
-  // const [session, setSession] = useState(null)
   const user = useUser()
   const supabase = useSupabaseClient()
 
@@ -44,7 +43,7 @@ const Pricing = ({plans}) => {
     supabase.auth.signInWithOAuth({
       provider: ['google'],
       options: {
-        redirectTo: "http://localhost:3000/pricing"
+        redirectTo: `${process.env.CLIENT_URL}/profile`
       }
     })
   }
@@ -54,22 +53,31 @@ const Pricing = ({plans}) => {
   const showManageSubscriptionButton = !!user && userData.is_subscribed;
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-16 flex justify-around">
-      {plans.map((plan) => (
-        <div key={plan.id} className="w-80 h-40 rounded shadow border-2 border-black px-6 py-4">
-          <h2 className="text-xl">{plan.name}</h2>
-          <p className="text-gray-500">
-            ${plan.price / 100} / {plan.interval}
-          </p>
-          {!loading && (
-            <div>
-              {showCreateAccountButton && <button onClick={login}>Create Account</button>}
-              {showSubscribeButton && <button onClick={processSubscription(plan.id)}>Subscribe</button>}
-              {showManageSubscriptionButton && <Link href="/profile">Manage Subscription</Link>}
-            </div>
-          )}
-        </div>
-      ))}
+    <div>
+    <div className="text-center">
+      Subscribing currently doesn&apos;t give anything, but it will in the future! 
+    </div>
+      <div className="w-full max-w-3xl mx-auto py-16 flex justify-center space-x-4">
+        {plans.map((plan) => (
+          <div key={plan.id}>
+            {plan.active === false ? <div /> :
+              <div className="w-80 h-40 rounded shadow border-2 border-black px-6 py-4">
+                <h2 className="text-xl">{plan.name}</h2>
+                <p className="text-gray-500">
+                  ${plan.price / 100} / {plan.interval}
+                </p>
+                {!loading && (
+                  <div>
+                    {showCreateAccountButton && <button onClick={login}>Create Account</button>}
+                    {showSubscribeButton && <button onClick={processSubscription(plan.id)}>Subscribe</button>}
+                    {showManageSubscriptionButton && <Link href="/profile">Manage Subscription</Link>}
+                  </div>
+                )}
+              </div>
+            }
+          </div>
+        ))}
+      </div>
     </div>
   )
 };
@@ -86,7 +94,8 @@ export const getStaticProps = async () => {
       name: product.name,
       price: price.unit_amount,
       interval: price.recurring.interval,
-      currency: price.currency
+      currency: price.currency,
+      active: product.active
     }
   }))
 
