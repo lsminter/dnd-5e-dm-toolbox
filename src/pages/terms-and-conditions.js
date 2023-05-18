@@ -2,7 +2,7 @@ const Terms = () => {
   return <div className="text-white"> 
   <h2 className="text-4xl">Terms and Conditions</h2>
   <p>
-  Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the https://www.dmtoolbox.app/ website (the "Service") operated by DMToolbox ("us", "we", or "our").
+  Please read these Terms and Conditions (&quot;Terms&quot;, &quot;Terms and Conditions&quot;) carefully before using the https://www.dmtoolbox.app/ website (the &quot;Service&quot;) operated by DMToolbox (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).
   </p>
   <br />
   <h2 className="text-2xl">Acceptance of Terms</h2>
@@ -12,7 +12,7 @@ const Terms = () => {
   <br />
   <h2 className="text-2xl">Subscription Terms</h2>
   <p>
-  We offer subscription services of various lengths ("Subscription(s)"). By subscribing, you agree to pay all fees associated with your chosen Subscription.
+  We offer subscription services of various lengths (&quot;Subscription(s)&quot;). By subscribing, you agree to pay all fees associated with your chosen Subscription.
   </p>
   <br />
   <p>
