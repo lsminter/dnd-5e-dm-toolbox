@@ -32,7 +32,6 @@ const SelectedMonsterStats = () => {
     const url = `https://api.open5e.com/monsters?challenge_rating=${challengeRating}`;
     const newFetchedMonsters = await fetchAllMonsters(url);
 
-    // Combine the existing allMonsters state and the new fetched monsters, and remove duplicate monsters based on their name
     const updatedAllMonsters = [
       ...allMonsters,
       ...newFetchedMonsters
@@ -162,12 +161,10 @@ const SelectedMonsterStats = () => {
                 <h2>
                   Conditional Immunities:
                   <h3 className="text-sm">
-                  {console.log(monster.condition_immunities)}
                     {monster.conditional_immunities === "" || monster.conditional_immunities == "-" || monster.conditional_immunities == undefined ? (
                       <p className="text-sm">None Listed</p>
                     ) : (
                       <div className="text-sm">
-                        {console.log(monster.conditional_immunities)}
                         {monster.conditional_immunities}
                       </div>
                     )}
@@ -218,51 +215,56 @@ const SelectedMonsterStats = () => {
 };
 
 export default SelectedMonsterStats;
-// Name, type, alignment, AC, HP, Speed, Stats, Skills, Senses, Languages, Challenge Rating, Proficiency Bonus, Special Abilities, Actions, Description, Spell List, 
 
 
-// actions: (4) [{…}, {…}, {…}, {…}]
-// alignment: "lawful evil"
-// armor_class: 17
-// armor_desc: "natural armor"
-// challenge_rating: "10"
-// charisma: 18
-// charisma_save: null
-// condition_immunities: ""
-// constitution: 15
-// constitution_save: 6
-// cr: 10
-// damage_immunities: ""
-// damage_resistances: ""
-// damage_vulnerabilities: ""
-// dexterity: 9
-// dexterity_save: null
-// document__license_url: "http://open5e.com/legal"
-// document__slug: "wotc-srd"
-// document__title: "Systems Reference Document"
-// group: null
-// hit_dice: "18d10+36"
-// hit_points: 135
-// img_main: "http://api.open5e.com/static/img/monsters/aboleth.png"
-// intelligence: 18
-// intelligence_save: 8
-// languages: "Deep Speech, telepathy 120 ft."
-// legendary_actions: (3) [{…}, {…}, {…}]
-// legendary_desc: "The aboleth can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The aboleth regains spent legendary actions at the start of its turn."
-// name: "Aboleth"
-// page_no: 261
-// perception: 10
-// reactions: ""
-// senses: "darkvision 120 ft., passive Perception 20"
-// size: "Large"
-// skills: {history: 12, perception: 10}
-// slug: "aboleth"
-// special_abilities: (3) [{…}, {…}, {…}]
-// speed: {walk: 10, swim: 40}
-// spell_list: []
-// strength: 21
-// strength_save: null
-// subtype: ""
-// type: "aberration"
-// wisdom: 15
-// wisdom_save: 6
+/*
+Things needed for monster stats
+Name, type, alignment, AC, HP, Speed, Stats, Skills, Senses, Languages, Challenge Rating, Proficiency Bonus, Special Abilities, Actions, Description, Spell List, 
+
+
+actions: (4) [{…}, {…}, {…}, {…}]
+alignment: "lawful evil"
+armor_class: 17
+armor_desc: "natural armor"
+challenge_rating: "10"
+charisma: 18
+charisma_save: null
+condition_immunities: ""
+constitution: 15
+constitution_save: 6
+cr: 10
+damage_immunities: ""
+damage_resistances: ""
+damage_vulnerabilities: ""
+dexterity: 9
+dexterity_save: null
+document__license_url: "http://open5e.com/legal"
+document__slug: "wotc-srd"
+document__title: "Systems Reference Document"
+group: null
+hit_dice: "18d10+36"
+hit_points: 135
+img_main: "http://api.open5e.com/static/img/monsters/aboleth.png"
+intelligence: 18
+intelligence_save: 8
+languages: "Deep Speech, telepathy 120 ft."
+legendary_actions: (3) [{…}, {…}, {…}]
+legendary_desc: "The aboleth can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The aboleth regains spent legendary actions at the start of its turn."
+name: "Aboleth"
+page_no: 261
+perception: 10
+reactions: ""
+senses: "darkvision 120 ft., passive Perception 20"
+size: "Large"
+skills: {history: 12, perception: 10}
+slug: "aboleth"
+special_abilities: (3) [{…}, {…}, {…}]
+speed: {walk: 10, swim: 40}
+spell_list: []
+strength: 21
+strength_save: null
+subtype: ""
+type: "aberration"
+wisdom: 15
+wisdom_save: 6
+*/

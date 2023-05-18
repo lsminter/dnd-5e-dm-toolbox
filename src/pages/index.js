@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 export default function Home() {
-
   return (
     <div className="text-center">
       <h2 className="mb-10 font-bold">
