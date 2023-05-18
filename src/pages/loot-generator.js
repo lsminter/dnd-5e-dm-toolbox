@@ -20,7 +20,7 @@ export default function Home() {
   // 0-4, 5-10, 11-16, >17
 
   return (
-    <div>
+    <div className="min-h-screen">
       <h1 className="text-3xl text-center font-bold underline my-4">
         Loot Generator
       </h1>

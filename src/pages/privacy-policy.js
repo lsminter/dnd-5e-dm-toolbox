@@ -1,5 +1,5 @@
 const Privacy = () => {
-  return <div className="text-white"> 
+  return <div className="min-h-screen text-white"> 
   <h2 className="text-4xl">Privacy Policy</h2>
   <p>
   Your privacy is important to us. It is DMToolbox&apos;s policy to respect your privacy regarding any information we may collect from you across our website, https://www.dmtoolbox.app/, and other sites we own and operate.

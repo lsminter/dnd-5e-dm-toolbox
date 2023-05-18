@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="text-center">
+    <div className="min-h-screen text-center">
       <h2 className="mb-10 font-bold">
         Listed below are the current tools I have. 
       </h2>

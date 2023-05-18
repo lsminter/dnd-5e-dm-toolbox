@@ -81,7 +81,7 @@ export default function AllCharacterOptions({ object }) {
   }
   
   return (
-    <div className="mt-4">
+    <div className="min-h-screen mt-4">
       <form 
         className="space-y-4"
         id="allValues" 

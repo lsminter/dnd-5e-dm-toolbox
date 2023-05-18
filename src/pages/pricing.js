@@ -53,7 +53,7 @@ const Pricing = ({plans}) => {
   const showManageSubscriptionButton = !!user && userData.is_subscribed;
 
   return (
-    <div>
+    <div className="min-h-screen">
     <div className="text-center">
       Subscribing currently doesn&apos;t give anything, but it will in the future! 
     </div>
