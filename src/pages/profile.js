@@ -61,7 +61,7 @@ const Profile = () => {
             userData?.is_subscribed
           ? 
             <div className="text-center">
-              <p>Subscribed: ${userData?.interval}</p>
+              <p>Subscribed: {userData?.interval}ly</p>
               <button onClick={loadPortal}>Manage Subscription</button>
             </div>
           : 
