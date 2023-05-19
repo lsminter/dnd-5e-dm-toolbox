@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import Header from '../components/random-components/Header.js'
+import NavBar from '../components/random-components/NavBar.js'
 import Footer from '../components/random-components/Footer.js'
 import {useState} from 'react'
 import {
@@ -20,9 +20,9 @@ export default function App({ Component, pageProps }) {
     supabaseClient={supabaseClient}
     initialSession={pageProps.initialSession}
   >
-      <div className="min-h-screen bg-gradient-to-b from-red-900 from-60% to-black text-black p-4">
+      <div className="min-h-screen bg-gradient-to-b from-red-900 from-60% to-black text-black">
         <QueryClientProvider client={queryClient}>
-          <Header />
+          <NavBar />
           <Component {...pageProps} />
           <Footer />
         </QueryClientProvider>

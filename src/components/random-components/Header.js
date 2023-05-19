@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import HeaderDropdown from './HeaderDropdown.js'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useUser } from '@supabase/auth-helpers-react'
 
 const Header = () => {
   const user = useUser();

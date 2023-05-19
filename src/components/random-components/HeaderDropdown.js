@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { HiOutlineChevronDown } from 'react-icons/hi';
 
-const DropdownMenu = () => {
+const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -65,4 +65,4 @@ const DropdownMenu = () => {
   );
 };
 
-export default DropdownMenu;
+export default HeaderDropdown;
