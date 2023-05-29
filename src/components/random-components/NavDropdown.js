@@ -44,17 +44,17 @@ export default function NavDropdown() {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } z-10 mx-2 origin-top-right absolute right-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
+        } z-10 mx-2 origin-top-right absolute right-0 mt-2 w-72 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
       >
-        <div className="py-1 text-center text-sm font-medium text-gray-700">
+        <div className="py-1 text-center text-sm font-medium bg-site-background rounded-md">
           {menuItems.map((item, index) => (
             <a
               key={index}
               href={item.link}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="block px-4 py-2 text-sm text-defaultColor hover:bg-gray-400 hover:text-gray-900 hover:rounded-md"
               role="menuitem"
             >
               {item.name}

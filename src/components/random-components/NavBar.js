@@ -6,7 +6,7 @@ import Image from 'next/image'
 const NavBar = () => {
   const user = useUser();
   return (
-    <header className="bg-[#120002] text-white w-full h-[144px] sm:h-[72px]">
+    <header className="bg-[#120002] w-full h-[144px] sm:h-[72px]">
       <div className="flex justify-between">
         <div className="block sm:flex align-middle">
           <div className="relative ml-4 mt-1 h-[70px] w-[70px] hover:cursor-pointer place-self-center">

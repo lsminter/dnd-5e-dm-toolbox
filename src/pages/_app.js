@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
     supabaseClient={supabaseClient}
     initialSession={pageProps.initialSession}
   >
-      <div className="min-h-screen bg-gradient-to-b from-red-900 from-60% to-black text-black">
+      <div className="min-h-screen bg-site-background">
         <QueryClientProvider client={queryClient}>
           <NavBar />
           <Component {...pageProps} />

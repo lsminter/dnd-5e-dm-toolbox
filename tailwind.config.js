@@ -4,10 +4,18 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
+    extend: {
+      fontFamily: {
       'dmt': '/fonts/MedievalSharp.ttf'
+      },
+      fontSize:{
+        '3xl': ['48px']
+      },
+      colors: {
+        'site-background': '#FFEBED',
+        'defaultColor': '#120002',
+      },
     },
-    extend: {},
   },
   plugins: [],
 }
