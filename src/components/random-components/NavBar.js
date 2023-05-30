@@ -24,7 +24,7 @@ const NavBar = () => {
         <div className="flex flex-col-reverse place-self-center mr-4 sm:flex-row sm:space-x-4">
           <NavDropdown />
           <Link href={user ? "/logout" : "/login"}>
-            <p className="text-center font-bold text-xl mb-4 sm:mb-0 hover:text-blue-500 sm:place-self-center">{user ? "Logout" : "Login"}</p>
+            <p className="text-center font-bold text-xl mb-4 sm:mb-0 hover:text-[#00554B] sm:place-self-center">{user ? "Logout" : "Login"}</p>
           </Link>
         </div>
       </div>
