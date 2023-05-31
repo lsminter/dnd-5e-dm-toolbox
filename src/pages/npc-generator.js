@@ -108,7 +108,7 @@ export default function AllCharacterOptions({ object }) {
         </div>
         <div className="flex max-w-[572px] justify-items-center p-2">
           <Image 
-            src="/images/page-images/npc.png" 
+            src="/images/tool-page-images/npc.png" 
             alt="home page image" 
             width={722}
             height={432}

@@ -19,12 +19,12 @@ const NavBar = () => {
               />
             </Link>
           </div>
-          <h3 className="place-self-center w-[144px] ml-4 text-lg font-[dmt]">Dungeon Master Toolbox</h3>
+          <h3 className="place-self-center w-[144px] ml-4 text-lg text-white font-[dmt]">Dungeon Master Toolbox</h3>
         </div>
         <div className="flex flex-col-reverse place-self-center mr-4 sm:flex-row sm:space-x-4">
           <NavDropdown />
           <Link href={user ? "/logout" : "/login"}>
-            <p className="text-center font-bold text-xl mb-4 sm:mb-0 hover:text-[#00554B] sm:place-self-center">{user ? "Logout" : "Login"}</p>
+            <p className="text-center font-bold text-xl mb-4 sm:mb-0 text-white hover:text-[#00554B] sm:place-self-center">{user ? "Logout" : "Login"}</p>
           </Link>
         </div>
       </div>
