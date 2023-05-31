@@ -62,7 +62,7 @@ const Profile = () => {
           ? 
             <div className="text-center">
               <p>Subscribed: {userData?.interval}ly</p>
-              <button onClick={loadPortal}>Manage Subscription</button>
+              <button className="bg-defaultButton" onClick={loadPortal}>Manage Subscription</button>
             </div>
           : 
             <div className="text-center">

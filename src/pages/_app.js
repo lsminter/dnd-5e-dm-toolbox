@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }) {
     supabaseClient={supabaseClient}
     initialSession={pageProps.initialSession}
   >
-      <div className="grid min-h-screen bg-site-background bg-opacity-80">
+      <div className="grid min-h-screen bg-site-background bg-opacity-80 text-defaultText">
         <QueryClientProvider client={queryClient}>
           <NavBar />
           <LoginBanner className=""/>

@@ -54,7 +54,7 @@ export default function NavDropdown() {
             <a
               key={index}
               href={item.link}
-              className="block px-4 py-2 text-sm text-defaultColor hover:bg-gray-400 hover:text-gray-900 hover:rounded-md"
+              className="block px-4 py-2 text-sm text-defaultText hover:bg-gray-400 hover:text-gray-900 hover:rounded-md"
               role="menuitem"
             >
               {item.name}

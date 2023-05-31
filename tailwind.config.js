@@ -12,8 +12,9 @@ module.exports = {
         '3xl': ['48px']
       },
       colors: {
-        'site-background': '#FFEBED',
-        'defaultColor': '#120002',
+        'site-background': '#FFFAFA',
+        'defaultText': '#120002',
+        'defaultButton': '#FFEBED',
       },
       screens:{
         md: '860px'

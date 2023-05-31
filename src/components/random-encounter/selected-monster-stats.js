@@ -85,12 +85,12 @@ const SelectedMonsterStats = () => {
             placeholder="CR"
             className="w-10 pl-1 mx-3 bg-white text-black rounded-md"
           />
-          <button className="px-2 w-full border border-gray-400 hover:bg-gray-500 bg-gray-400 rounded-md" onClick={fetchMonsters}>Fetch Monsters</button>
+          <button className="px-2 w-full border bg-defaultButton rounded-md" onClick={fetchMonsters}>Fetch Monsters</button>
         </div>
-        <button className="px-2 border border-gray-400 hover:bg-gray-500 bg-gray-400 rounded-md" onClick={toggleMonsterData}>{
+        <button className="px-2 border bg-defaultButton rounded-md" onClick={toggleMonsterData}>{
           showMonsterData ? 'Hide Monster Stats' : 'Show Monster Stats'}
         </button>
-        <button className="px-2 border border-gray-400 hover:bg-gray-500 bg-gray-400 rounded-md" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
+        <button className="px-2 border bg-defaultButton rounded-md" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
       </div>
       {!showMonsterData && (
         <>

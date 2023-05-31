@@ -125,16 +125,16 @@ export default function AllCharacterOptions() {
         id="allValues" 
         onSubmit={handleAllOptions}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 content-center text-defaultText">
           <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
           <CharacterAlignment className="m-2" selectedAlignment={() => handleAlignment()}/>
           <CharacterClass className="m-2" selectedCharacterClass={() => handleCharacterClass()}/>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
+        <div className="grid grid-cols-1 sm:grid-cols-3 content-center text-defaultText">
           <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
           <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
         </div>
-        <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
+        <button className="px-2 py-2 mx-2 bg-defaultButton text-defaultText rounded-lg" type="submit">Get Character!</button>
       </form>
       <div>
       {spinner === true ? (
