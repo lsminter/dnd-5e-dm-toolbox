@@ -1,6 +1,4 @@
 import AllCharacterOptions from '../components/character-options/all-character-options.js'
-import CharacterSheet from '../components/character-sheet/fullCharacterSheet.js'
-
 
 export default function Home() {
 

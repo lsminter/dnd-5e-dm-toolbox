@@ -6,6 +6,7 @@ import AdditionalInfo from '../components/character-options/additional-info.js'
 import { useState } from 'react';
 import { Configuration, OpenAIApi } from 'openai';
 import { InfinitySpin } from 'react-loader-spinner'
+import Image from 'next/image'
 
 export default function AllCharacterOptions({ object }) {
   const [race, setRace] = useState("Dragonborn")
@@ -81,48 +82,87 @@ export default function AllCharacterOptions({ object }) {
   }
   
   return (
-    <div className="min-h-screen mt-4">
+    <div className="min-h-screen mt-4 text-defaultColor">
+      <div className="grid justify-items-center md:grid-cols-2 mt-4 md:mt-10 md:space-x-4">
+        <div className="space-y-4 p-4 max-w-[572px]">
+          <h1 className="md:text-3xl text-4xl leading-none tracking-normal text-center sm:text-left font-[dmt]">
+            Quick Build an NPC
+          </h1>
+          <p>
+            Select a few options and the AI will create a name, description, and background for your NPC.
+          </p>
+          <form 
+            className="hidden md:grid space-y-4"
+            id="allValues" 
+            onSubmit={handleAllOptions}
+          >
+            <div className="grid grid-cols-2 content-center">
+              <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
+              <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
+              <JobSelect onSelect={setSelectedJob} />
+              <JobList jobName={selectedJob} />
+            </div>
+            <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
+            <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg" type="submit">Get Character!</button>
+          </form>
+        </div>
+        <div className="flex max-w-[572px] justify-items-center p-2">
+          <Image 
+            src="/images/tool-page-images/npc.png" 
+            alt="home page image" 
+            width={722}
+            height={432}
+            className="rounded-md"
+          />
+        </div>
+      </div>
       <form 
-        className="space-y-4"
+        className="md:hidden space-y-4"
         id="allValues" 
         onSubmit={handleAllOptions}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
+        <div className="grid grid-cols-1 content-center">
           <CharacterRace className="m-2" selectedRace={() => handleSelectedRace()}/>
           <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
           <JobSelect onSelect={setSelectedJob} />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 content-center">
           <JobList jobName={selectedJob} />
           <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
         </div>
-        <button className="px-2 py-2 mx-2 border border-gray-400 bg-gray-400 rounded-lg" type="submit">Get Character!</button>
+        <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
         <InfinitySpin 
           width='200'
           color="#00008B"
         />
-        ) : <div className="sm:flex mt-2">
-          <div className="m-2 space-y-2 text-gray-200">
-            <h1 className="font-bold">
-              {name}
-            </h1>
-            <p>
-              {nameValue}
-            </p>
-            <h1 className="font-bold">
-              {description}
-            </h1>
-            <p>
-              {descriptionValue}
-            </p>
-            <h1 className="font-bold">
-              {background}
-            </h1>
-            <p>
-              {backgroundValue}
-            </p>
+        ) : <div className="flex mt-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 m-2 space-y-2 md:space-y-4 gap-x-12">
+            <div className="space-y-4">
+              <div>
+                <h1 className="font-bold text-xl">
+                  {name}
+                </h1>
+                <p>
+                  {nameValue}
+                </p>
+              </div>
+              <div>
+                <h1 className="font-bold text-xl">
+                  {description}
+                </h1>
+                <p>
+                  {descriptionValue}
+                </p>
+              </div>
+            </div>
+            <div>
+              <h1 className="font-bold text-xl">
+                {background}
+              </h1>
+              <p>
+                {backgroundValue}
+              </p>
+            </div>
           </div>
         </div>
       }

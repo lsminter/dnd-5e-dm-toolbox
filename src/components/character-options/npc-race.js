@@ -28,7 +28,7 @@ function CharacterRace({ selectedRace }) {
             <div>
             <p className="text-center">Select Race</p>
             <select
-              className="px-4 py-2 border border-gray-400 bg-gray-400 rounded-lg"
+              className="px-4 py-2 bg-defaultButton rounded-lg"
               id='race'
               onChange={selectedRace}
             >

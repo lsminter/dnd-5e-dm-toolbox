@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { HiOutlineChevronDown } from 'react-icons/hi';
 
-const DropdownMenu = () => {
+const HeaderDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -27,7 +27,7 @@ const DropdownMenu = () => {
         } group-hover:block dropdown-menu hidden h-auto`}
       >
         <div className="top-9 w-auto bg-white shadow absolute px-3 py-4 rounded-md z-10" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-          <Link href="/character-generator">
+          <Link href="/pc-generator">
             <p
               className="block px-4 py-2 text-xs rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
@@ -51,7 +51,7 @@ const DropdownMenu = () => {
               Loot Generator
             </p>
           </Link>
-          <Link href="/random-encounter">
+          <Link href="/encounter-generator">
             <p
               className="block px-4 py-2 text-xs rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
@@ -65,4 +65,4 @@ const DropdownMenu = () => {
   );
 };
 
-export default DropdownMenu;
+export default HeaderDropdown;
