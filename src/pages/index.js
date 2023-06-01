@@ -49,7 +49,7 @@ export default function Home() {
           image='/images/home-page-images/encounter.png' 
           title="Encounter Generator" 
           description='The Encounter Generator allows you to select monsters from a list of monsters based on Combat Rating. You can then select the amount of each monster you want, click the Selected Monster Stats button, and it will display the stats for each monster you selected.'  
-          toolPage="/random-encounter"
+          toolPage="/encounter-generator"
         />
       </div>
     </div>

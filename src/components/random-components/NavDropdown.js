@@ -9,7 +9,7 @@ export default function NavDropdown() {
     { name: "Pricing", link: "/pricing" },
     { name: "NPC Generator", link: "/npc-generator" },
     { name: "PC Generator", link: "/character-generator" },
-    { name: "Encounter Generator", link: "/random-encounter" },
+    { name: "Encounter Generator", link: "/encounter-generator" },
     { name: "Loot Generator", link: "/loot-generator" },
   ];
 
