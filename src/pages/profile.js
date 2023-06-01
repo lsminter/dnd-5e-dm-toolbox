@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-
-import SavedPCs from '../components/profiles/pcCharacter'
+import Image from 'next/image'
 
 const Profile = () => {
   const router = useRouter()
@@ -42,7 +41,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen">
       <div>
         {!user && 
           <Auth
@@ -55,21 +54,56 @@ const Profile = () => {
         }
       </div>
       {!loading && (   
-        <div className="flex flex-col items-center text-center">
-          <SavedPCs subscribed={userData?.is_subscribed}/>
-          {
-            userData?.is_subscribed
-          ? 
-            <div className="text-center">
-              <p>Subscribed: {userData?.interval}ly</p>
-              <button className="bg-defaultButton" onClick={loadPortal}>Manage Subscription</button>
+        <div className="mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 text-center m-4 space-x-4">
+            <div className="grid grid-cols-1">
+              <h1 className="text-2xl">
+              {console.log(userData)}
+                {userData?.email ? (
+                  <div className="grid justify-items-center">
+                    {userData?.email}
+                  </div>
+                  ) : (
+                    <div className="grid justify-items-center">
+                      {userData?.user_metadata.email}
+                    </div>
+                  )
+                }
+              </h1>
+              <div className="grid grid-cols-1 justify-items-center space-y-2">
+                <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">Saved PC&apos;s</button>
+                <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">Saved NPC&apos;s</button>
+                <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">Saved Encounters</button>
+                <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">Saved Campaigns</button>
+              </div>
             </div>
-          : 
-            <div className="text-center">
-              <p>Not Subscribed</p>
-              <Link href="/pricing" className="hover:text-purple-400">Click to go to pricing</Link>
+            <div className="w-full h-full justify-self-center">
+              <Image 
+                alt="site logo" 
+                src="/images/logos/white-logo.svg" 
+                width={300}
+                height={300}
+              />
             </div>
-          }
+          </div>
+          
+          <div className="mt-8 space-y-2">
+            <p className="text-center">Being able to save PC&apos;s, NPC&apos;s, Encounters, and Campaigns will coming soon!</p>
+
+            {
+              userData?.is_subscribed
+            ? 
+              <div className="text-center space-y-2">
+                <p>Subscription Status: {userData?.interval}ly</p>
+                <button className="bg-defaultButton rounded-md p-2" onClick={loadPortal}>Manage Subscription</button>
+              </div>
+            : 
+              <div className="text-center space-y-2">
+                <p>Subscription Status: Not Subscribed</p>
+                <Link href="/pricing" className="hover:text-purple-400">Click to go to pricing</Link>
+              </div>
+            }    
+          </div>   
         </div>
       )}
     </div>
