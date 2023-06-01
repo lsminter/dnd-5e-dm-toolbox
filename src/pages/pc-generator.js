@@ -57,7 +57,7 @@ export default function AllCharacterOptions() {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{role: "user", content: `
-      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short, 100 characters max, character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character.
+      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a character description, around 150 characters, 200 max, with no filler words but add skin color, eye color, race, sex, and height. For the background, write a short background for a 5E DND character.
       
       Output it like this:
       Name: First Last
@@ -91,7 +91,8 @@ export default function AllCharacterOptions() {
   const fetchImageResponse = async () => {
     setImage();
     const reply = await openai.createImage({
-      prompt: `Head only facing camera, D&D Classic Style, 4k, ${sex}, ${race}, ${descriptionValue}.`,
+      // prompt: `Head only facing camera, D&D Classic Style, 4k, ${sex}, ${race}, ${descriptionValue}.`,
+      prompt: `A portrait of a ${descriptionValue}. The scene is at sunset and they are standing on rocky boulder. In the art style of Gerald Brom. Realistic`,
       n: 1,
       size: "256x256",
     })
@@ -118,6 +119,8 @@ export default function AllCharacterOptions() {
     })
     
   }
+
+  const characterImage = image || '/images/page-images/pc.png'
   
   return (
     <div className="min-h-screen mt-4 text-defaultColor">
@@ -189,7 +192,7 @@ export default function AllCharacterOptions() {
           : 
             <div className="flex place-self-center p-2">
               <Image 
-                src={image || '/images/page-images/pc.png'}
+                src={characterImage}
                 alt="DALL-E image of dnd character"
                 width={400}
                 height={400}

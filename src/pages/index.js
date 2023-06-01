@@ -31,7 +31,7 @@ export default function Home() {
           image='/images/home-page-images/pc.png' 
           title="Character Generator" 
           description='The character generator is a tool that allows you to quickly build your own DND character! You select the Race, Alignment, Class, and Gender and it will generate a name, character description, and character background for you. It will also generate an image of your character, all using AI.'
-          toolPage="/character-generator"
+          toolPage="/pc-generator"
         />
         <ToolsCard 
           image='/images/home-page-images/loot.png' 
