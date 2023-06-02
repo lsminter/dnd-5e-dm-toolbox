@@ -19,13 +19,13 @@ export default function FullCharacterSheet({
   alignment
 }) {
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container p-4 space-y-6">
     {/* Sheet One */}
       <main className="flex flex-col items-center">
         <h1 className="text-4xl font-bold mb-6">Character Sheet</h1>
         <div className="bg-white rounded-md shadow-md p-4 w-full">
           <div className='grid grid-cols-1 border-2'>
-          <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3">
               <div>
                 <p className="text-center">
                   Character Name
@@ -129,7 +129,7 @@ export default function FullCharacterSheet({
                 <CharacterStats label="Charisma" value="20" modifier="1"/>
               </div>
             </div>
-            <div className="w-40 space-y-1">
+            <div className="space-y-1">
               <div className="grid grid-cols-1 border-2 p-1">
                 <SavingThrows label="Strength" value="10" />
                 <SavingThrows label="Dexterity" value="12" />
@@ -160,14 +160,15 @@ export default function FullCharacterSheet({
                 <SavingThrows label="Survival" value="30" />
                 <p className='text-center text-sm'>Skills</p>
               </div>
-              <div className="text-center border-2 h-32">
-                Passive Wisdom (Perception)
+              {/* removed until mobile is formatted. This destroyed the mobile page */}
+              {/* <div className="text-center border-2 h-32">
+                <p className="text-xs">Passive Wisdom (Perception)</p>
                 <input
                   type="number"
                   placeholder="0"
                   className="border rounded-md p-2 mt-2 text-sm text-white text-center w-16"
                 />
-              </div>
+              </div> */}
             </div>
             <div className="space-y-1 w-1/2">
               <div className="grid grid-cols-3 gap-4 border-2 p-1">
