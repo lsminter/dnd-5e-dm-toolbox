@@ -65,7 +65,7 @@ const Profile = () => {
           {!userData ? 
             <div className="p-4">
               <Auth
-                redirectTo={`http://localhost:3000/profile`}
+                redirectTo={`${process.env.CLIENT_URL}/profile`}
                 appearance={{ theme: ThemeSupa }}
                 supabaseClient={supabase}
                 providers={['google']}

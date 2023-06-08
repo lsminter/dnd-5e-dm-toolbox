@@ -36,7 +36,6 @@ export default function FullCharacterSheet({
           .from('pc_characters')
           .select(('*'))
           .eq('id', user.id)
-          .eq('pc_name', "Graak Bloodfury")
           
           setPcs(pcs)
         }
@@ -697,12 +696,6 @@ export default function FullCharacterSheet({
     if(pcs[0]?.pc_data.wisdom !== undefined){setCharacterWisdom(pcs[0]?.pc_data.wisdom)}
     if(pcs[0]?.pc_data.wisdomModifier !== undefined){setCharacterWisdomModifier(pcs[0]?.pc_data.wisdomModifier)}
     if(pcs[0]?.pc_data.wisdomSave !== undefined){setCharacterWisdomSave(pcs[0]?.pc_data.wisdomSave)}
-
-    
-    
-    
-
-
     console.log(pcs[0]?.pc_data)
   }, [pcs])
 
