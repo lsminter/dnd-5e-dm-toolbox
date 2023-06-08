@@ -1,9 +1,31 @@
-export default function CharacterStats({ label, value, modifier }) {
+export default function CharacterStats({
+  label,
+  setStatValue,
+  name,
+  nameModifier,
+  statValue,
+  setModifierValue,
+  modifierValue,
+}) {
   return (
     <div className="flex flex-col text-center justify-center items-center space-y-1">
       <span className="text-sm">{label}</span>
-      <input className="border rounded-md p-1 text-2xl text-white w-14" placeholder={value}/>
-      <input className="border rounded-md p-1 text-sm text-white w-14" type='text' placeholder={`+${modifier}`}/>
+      <input
+        name={name}
+        className="border rounded-md p-1 text-2xl text-white w-14"
+        type="number"
+        placeholder="1"
+        onChange={setStatValue}
+        value={statValue}
+      />
+      <input
+        name={nameModifier}
+        className="border rounded-md p-1 text-sm text-white w-14"
+        type="number"
+        placeholder="1"
+        onChange={setModifierValue}
+        value={modifierValue}
+      />
     </div>
   );
 }
