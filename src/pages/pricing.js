@@ -43,7 +43,7 @@ const Pricing = ({plans}) => {
     supabase.auth.signInWithOAuth({
       provider: ['google'],
       options: {
-        redirectTo: `${process.env.CLIENT_URL}/profile`
+        redirectTo: `http://localhost:3001/profile`
       }
     })
   }
