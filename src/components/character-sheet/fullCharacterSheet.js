@@ -8,10 +8,12 @@ import AttAndSpells from "./attacksAndSpellcasting.js";
 import CharacterSpells from "./characterSpells.js";
 import SpellNames from "./spellNames.js";
 import CharacterCantrips from "./characterCantrips.js";
+// import dataURLtoFile from "./imageConverter.js";
 
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { decode, encode } from 'base64-arraybuffer'
 
 export default function FullCharacterSheet({
   nameValue,
@@ -20,6 +22,9 @@ export default function FullCharacterSheet({
   characterClass,
   race,
   alignment,
+  pc,
+  pc_id,
+  b64,
   img
 }) {
 
@@ -36,12 +41,13 @@ export default function FullCharacterSheet({
           .from('pc_characters')
           .select(('*'))
           .eq('id', user.id)
+          .eq('pc_name', pc)
           
           setPcs(pcs)
         }
       }
       fetchPcs()
-  }, [user, supabase, nameValue])
+  }, [user, supabase, pc])
   
   const [characterName, setCharacterName] = useState(nameValue);
   const [characterDescription, setCharacterDescription] = useState(description);
@@ -372,6 +378,7 @@ export default function FullCharacterSheet({
   const [characterSpellLevel9Spell8, setCharacterSpellLevel9Spell8] = useState("");
   const [characterSpellLevel9Spell8Checked, setCharacterSpellLevel9Spell8Checked] = useState(false);
   const [characterImage, setCharacterImage] = useState(undefined);
+  const [bucketImageLink, setBucketImageLink] = useState(undefined);
 
   useEffect(() => {
     if(pcs[0]?.pc_data.name !== undefined){setCharacterName(pcs[0]?.pc_data.name)}
@@ -696,7 +703,6 @@ export default function FullCharacterSheet({
     if(pcs[0]?.pc_data.wisdom !== undefined){setCharacterWisdom(pcs[0]?.pc_data.wisdom)}
     if(pcs[0]?.pc_data.wisdomModifier !== undefined){setCharacterWisdomModifier(pcs[0]?.pc_data.wisdomModifier)}
     if(pcs[0]?.pc_data.wisdomSave !== undefined){setCharacterWisdomSave(pcs[0]?.pc_data.wisdomSave)}
-    console.log(pcs[0]?.pc_data)
   }, [pcs])
 
   useEffect(() => {
@@ -707,10 +713,17 @@ export default function FullCharacterSheet({
       setCharacterBackground(background);
       setCharacterCharacterClass(characterClass);
       setCharacterRace(race);
+
+      const { data: bucketImage, error: bucketError } = supabase
+        .storage
+        .from('dnd_images')
+        .getPublicUrl(`character_images/${user?.id}/${pc}/character_image.png`)
+        
+      setBucketImageLink(bucketImage.publicUrl)
     }
     setValues();
 
-  }, [nameValue, description, background, characterClass, race, alignment])
+  }, [nameValue, description, background, characterClass, race, alignment, supabase, user, pc])
 
 
   const formToJSON = (elements) =>
@@ -723,15 +736,32 @@ export default function FullCharacterSheet({
       {}
     );
 
-  const handleClick = async (e) => {
+  const handleSavePc = async (e) => {
     e.preventDefault();
     const data = formToJSON(ref.current);
     const { error } = await supabase
       .from('pc_characters')
       .insert({id: user.id, pc_name: nameValue, pc_data: data})
 
-    console.log(data);
+    const { data: image, error: imgError } = await supabase.storage
+      .from('dnd_images')
+      .upload(`character_images/${user.id}/${nameValue}/character_image.png`, decode(b64), {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/png'
+      })
   };
+
+  const handleUpdatePc = async (e) => {
+    e.preventDefault();
+    const data = formToJSON(ref.current);
+    const { error } = await supabase
+      .from('pc_characters')
+      .update({pc_data: data})
+      .eq('pc_id', pc_id)
+  };
+
+  console.log(bucketImageLink)
 
   return (
     <form
@@ -739,31 +769,52 @@ export default function FullCharacterSheet({
       className="container p-4 space-y-6 w-full"
     >
       <div className="grid grid-cols-1">
+      {!pc_id ? (
+        <div />
+      ) : (
         <h1 className="text-4xl text-center">{characterName}</h1>
-        <div className="flex place-self-center p-2">
-          <Image
-            src={characterImage}
-            alt="DALL-E image of dnd character"
-            name="characterImage"
-            width={400}
-            height={400}
-            className="border-2 border-black rounded-md w-full"
-          />
+      )}
+        {!characterImage ? (
+          <div className="hidden">
+            <div className="flex place-self-center p-2">
+              <Image
+                src={bucketImageLink}
+                alt="DALL-E image of dnd character"
+                name="characterImage"
+                width={400}
+                height={400}
+                className="border-2 border-black rounded-md w-full"
+              />
+            </div>
+            <div
+              className="hidden" 
+              name="characterImage"
+              value={characterImage}
+            />
+          </div>
+          ) : (
+            <div className="flex place-self-center p-2">
+              <Image
+                src={bucketImageLink}
+                alt="DALL-E image of dnd character"
+                name="characterImage"
+                width={400}
+                height={400}
+                className="border-2 border-black rounded-md w-full"
+              />
+            </div>
+          )}
         </div>
-        <input
-          className="hidden" 
-          name="characterImage"
-          value={img}
-        />
-      </div>
       <div className="flex justify-center space-x-4">
         <h1 className="text-4xl font-bold">Character Sheet</h1>
         <button
-          onClick={handleClick}
+          onClick={
+            !pc_id ? handleSavePc : handleUpdatePc
+          }
           type="submit"
           className="bg-defaultButton p-2 rounded-md"
         >
-          Save Character Sheet
+          {!pc_id ? <p>Save Character Sheet</p> : <p>Update Character Sheet</p>} 
         </button>
       </div>
       {/* Sheet One */}
