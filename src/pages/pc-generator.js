@@ -126,7 +126,7 @@ export default function AllCharacterOptions() {
   };
 
   const b64Image = `data:image/png;base64,${image}`
-  const characterImage = !image ? "/images/page-images/pc.png" : b64Image;
+  const characterImage = !image ? "/images/tool-page-images/pc.png" : b64Image;
   
   return (
     <div className="min-h-screen mt-4 text-defaultColor">
