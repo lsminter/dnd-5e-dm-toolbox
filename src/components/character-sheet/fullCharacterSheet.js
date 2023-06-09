@@ -761,8 +761,6 @@ export default function FullCharacterSheet({
       .eq('pc_id', pc_id)
   };
 
-  console.log(bucketImageLink)
-
   return (
     <form
       ref={ref}

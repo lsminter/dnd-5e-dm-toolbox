@@ -176,7 +176,7 @@ export default function AllCharacterOptions() {
         </div>
         <div className="flex max-w-[572px] justify-items-center p-2">
           <Image
-            src="/images/tool-page-images/pc.png"
+            src={characterImage}
             alt="home page image"
             width={722}
             height={432}
@@ -233,7 +233,6 @@ export default function AllCharacterOptions() {
               <h2
                 name="characterName"
                 className="text-center text-3xl bg-inherit"
-                onChange={(e) => console.log(e.target.value)}
               >
                 {nameValue}
               </h2>
