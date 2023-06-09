@@ -745,13 +745,13 @@ export default function FullCharacterSheet({
       .from('pc_characters')
       .insert({id: user.id, pc_name: nameValue, pc_data: data})
 
-    // const { data: image, error: imgError } = await supabase.storage
-    //   .from('dnd_images')
-    //   .upload(`character_images/${user.id}/${nameValue}/character_image.png`, decode(b64), {
-    //     cacheControl: '3600',
-    //     upsert: false,
-    //     contentType: 'image/png'
-    //   })
+    const { data: image, error: imgError } = await supabase.storage
+      .from('dnd_images')
+      .upload(`character_images/${user.id}/${nameValue}/character_image.png`, decode(b64), {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/png'
+      })
   };
 
   const handleUpdatePc = async (e) => {
@@ -774,7 +774,7 @@ export default function FullCharacterSheet({
       ) : (
         <h1 className="text-4xl text-center">{characterName}</h1>
       )}
-        {!pc_id ? (
+        {!bucketImage ? (
           <div className="hidden">            
           </div>
           ) : (
