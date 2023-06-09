@@ -152,7 +152,7 @@ const Profile = () => {
                 <div />
               ) : (
                 <div className="flex justify-items-center">
-                  <FullCharacterSheet pc={selectedPc} pc_id={selectedPcId}/>
+                  <FullCharacterSheet pc={selectedPc} pc_id={selectedPcId} />
                 </div>
               )}
               

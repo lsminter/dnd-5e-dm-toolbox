@@ -8,12 +8,11 @@ import AttAndSpells from "./attacksAndSpellcasting.js";
 import CharacterSpells from "./characterSpells.js";
 import SpellNames from "./spellNames.js";
 import CharacterCantrips from "./characterCantrips.js";
-// import dataURLtoFile from "./imageConverter.js";
 
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { decode, encode } from 'base64-arraybuffer'
+import { decode } from 'base64-arraybuffer'
 
 export default function FullCharacterSheet({
   nameValue,
@@ -25,7 +24,6 @@ export default function FullCharacterSheet({
   pc,
   pc_id,
   b64,
-  img
 }) {
 
   const user = useUser();
@@ -378,7 +376,7 @@ export default function FullCharacterSheet({
   const [characterSpellLevel9Spell8, setCharacterSpellLevel9Spell8] = useState("");
   const [characterSpellLevel9Spell8Checked, setCharacterSpellLevel9Spell8Checked] = useState(false);
   const [characterImage, setCharacterImage] = useState(undefined);
-  const [bucketImageLink, setBucketImageLink] = useState(undefined);
+  const [bucketImage, setBucketImage] = useState(undefined);
 
   useEffect(() => {
     if(pcs[0]?.pc_data.name !== undefined){setCharacterName(pcs[0]?.pc_data.name)}
@@ -713,20 +711,12 @@ export default function FullCharacterSheet({
       setCharacterBackground(background);
       setCharacterCharacterClass(characterClass);
       setCharacterRace(race);
-
-      const { data: bucketImage, error: bucketError } = supabase
-        .storage
-        .from('dnd_images')
-        .getPublicUrl(`character_images/${user?.id}/${pc}/character_image.png`)
-        
-      setBucketImageLink(bucketImage.publicUrl)
     }
     setValues();
 
-  }, [nameValue, description, background, characterClass, race, alignment, supabase, user, pc])
+  }, [nameValue, description, background, characterClass, race, alignment])
 
-
-  const formToJSON = (elements) =>
+  const formToJSON = (elements) =>{
     [].reduce.call(
       elements,
       (data, element) => {
@@ -735,6 +725,19 @@ export default function FullCharacterSheet({
       },
       {}
     );
+  }
+
+  useEffect(() => {
+    const setImageValue = () => {
+      const { data: bucketImage, error: bucketError } = supabase
+        .storage
+        .from('dnd_images')
+        .getPublicUrl(`character_images/${user.id}/${characterName}/character_image.png`)
+        
+      setBucketImage(bucketImage.publicUrl.toString());
+    }
+    setImageValue();
+  }, [user, supabase, characterName])
 
   const handleSavePc = async (e) => {
     e.preventDefault();
@@ -772,11 +775,11 @@ export default function FullCharacterSheet({
       ) : (
         <h1 className="text-4xl text-center">{characterName}</h1>
       )}
-        {!characterImage ? (
+        {!bucketImage ? (
           <div className="hidden">
             <div className="flex place-self-center p-2">
               <Image
-                src={bucketImageLink}
+                src={bucketImage}
                 alt="DALL-E image of dnd character"
                 name="characterImage"
                 width={400}
@@ -793,7 +796,7 @@ export default function FullCharacterSheet({
           ) : (
             <div className="flex place-self-center p-2">
               <Image
-                src={bucketImageLink}
+                src={bucketImage}
                 alt="DALL-E image of dnd character"
                 name="characterImage"
                 width={400}
