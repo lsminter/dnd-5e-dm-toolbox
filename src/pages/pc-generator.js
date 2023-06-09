@@ -61,12 +61,12 @@ export default function AllCharacterOptions() {
         {
           role: "user",
           content: `
-      I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a character description, around 100 characters max, with no filler words but add skin color, eye color, race, sex, and height. For the background, write a short background for a 5E DND character.
-      
-      Output it like this:
-      Name: First Last
-      Description: Description
-      Background: Background`,
+            I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a character description, around 100 characters max, with no filler words but add skin color, eye color, race, sex, and height. For the background, write a short background for a 5E DND character.
+            
+            Output it like this:
+            Name: First Last
+            Description: Description
+            Background: Background`,
         },
       ],
     });
@@ -100,9 +100,10 @@ export default function AllCharacterOptions() {
       prompt: `${descriptionValue}. ${sex}, ${race}, portrait, head, detailed face, 4k`,
       n: 1,
       size: "256x256",
+      response_format: "b64_json"
     });
     setImage(() => {
-      return reply.data.data[0].url;
+      return reply.data.data[0].b64_json;
     });
   };
 
@@ -124,24 +125,9 @@ export default function AllCharacterOptions() {
       });
   };
 
-  const characterImage = image || "/images/page-images/pc.png";
-
-  const formToJSON = (elements) =>
-    [].reduce.call(
-      elements,
-      (data, element) => {
-        data[element.name] = element.value;
-        return data;
-      },
-      {}
-    );
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    const data = formToJSON(ref.current);
-    console.log(data);
-  };
-
+  const b64Image = `data:image/png;base64,${image}`
+  const characterImage = !image ? "/images/page-images/pc.png" : b64Image;
+  
   return (
     <div className="min-h-screen mt-4 text-defaultColor">
       <div className="grid justify-items-center md:grid-cols-2 mt-4 md:mt-10 md:space-x-4">
@@ -244,22 +230,13 @@ export default function AllCharacterOptions() {
             className="mt-8"
           >
             <div className="grid grid-cols-1 md:flex justify-center space-x-4">
-              <input
+              <h2
                 name="characterName"
                 className="text-center text-3xl bg-inherit"
-                defaultValue={nameValue}
-              />
-              {nameValue === undefined ? (
-                <div className="hidden" />
-              ) : (
-                <button
-                  onClick={handleClick}
-                  type="submit"
-                  className="bg-defaultButton p-2 rounded-md h-10 place-self-center"
-                >
-                  Save Character
-                </button>
-              )}
+                onChange={(e) => console.log(e.target.value)}
+              >
+                {nameValue}
+              </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-4">
               {imageSpinner === true ? (
@@ -282,19 +259,27 @@ export default function AllCharacterOptions() {
               <div className="grid grid-col-1 space-y-4 p-2 place-self-start w-full">
                 <div>
                   <h1 className="font-bold text-xl">{description}</h1>
-                  <textarea
-                    name="characterDescription"
-                    value={descriptionValue}
-                    className="bg-inherit w-full"
-                  />
+                  {!descriptionValue ? (
+                    <p className="hidden" />
+                  ) : (
+                    <textarea
+                      name="characterDescription"
+                      value={descriptionValue}
+                      className="bg-inherit w-full"
+                    />
+                  )}
                 </div>
                 <div>
                   <h1 className="font-bold text-xl">{background}</h1>
-                  <textarea
-                    name="characterBackground"
-                    value={backgroundValue}
-                    className="bg-inherit w-full"
-                  />
+                  {!backgroundValue ? (
+                    <p className="hidden" />
+                  ) : (
+                    <textarea
+                      name="characterDescription"
+                      value={backgroundValue}
+                      className="bg-inherit w-full"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -309,6 +294,7 @@ export default function AllCharacterOptions() {
           race={race}
           alignment={alignment}
           img={characterImage}
+          b64={image}
         />
       </div>
     </div>
