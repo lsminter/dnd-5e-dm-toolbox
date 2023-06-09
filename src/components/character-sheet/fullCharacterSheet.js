@@ -716,7 +716,7 @@ export default function FullCharacterSheet({
 
   }, [nameValue, description, background, characterClass, race, alignment])
 
-  const formToJSON = (elements) =>{
+  const formToJSON = (elements) =>
     [].reduce.call(
       elements,
       (data, element) => {
@@ -725,14 +725,13 @@ export default function FullCharacterSheet({
       },
       {}
     );
-  }
 
   useEffect(() => {
     const setImageValue = () => {
       const { data: bucketImage, error: bucketError } = supabase
         .storage
         .from('dnd_images')
-        .getPublicUrl(`character_images/${user.id}/${characterName}/character_image.png`)
+        .getPublicUrl(`character_images/${user?.id}/${characterName}/character_image.png`)
         
       setBucketImage(bucketImage.publicUrl.toString());
     }
@@ -746,13 +745,13 @@ export default function FullCharacterSheet({
       .from('pc_characters')
       .insert({id: user.id, pc_name: nameValue, pc_data: data})
 
-    const { data: image, error: imgError } = await supabase.storage
-      .from('dnd_images')
-      .upload(`character_images/${user.id}/${nameValue}/character_image.png`, decode(b64), {
-        cacheControl: '3600',
-        upsert: false,
-        contentType: 'image/png'
-      })
+    // const { data: image, error: imgError } = await supabase.storage
+    //   .from('dnd_images')
+    //   .upload(`character_images/${user.id}/${nameValue}/character_image.png`, decode(b64), {
+    //     cacheControl: '3600',
+    //     upsert: false,
+    //     contentType: 'image/png'
+    //   })
   };
 
   const handleUpdatePc = async (e) => {
@@ -775,23 +774,8 @@ export default function FullCharacterSheet({
       ) : (
         <h1 className="text-4xl text-center">{characterName}</h1>
       )}
-        {!bucketImage ? (
-          <div className="hidden">
-            <div className="flex place-self-center p-2">
-              <Image
-                src={bucketImage}
-                alt="DALL-E image of dnd character"
-                name="characterImage"
-                width={400}
-                height={400}
-                className="border-2 border-black rounded-md w-full"
-              />
-            </div>
-            <div
-              className="hidden" 
-              name="characterImage"
-              value={characterImage}
-            />
+        {!pc_id ? (
+          <div className="hidden">            
           </div>
           ) : (
             <div className="flex place-self-center p-2">
@@ -802,6 +786,11 @@ export default function FullCharacterSheet({
                 width={400}
                 height={400}
                 className="border-2 border-black rounded-md w-full"
+              />
+              <div
+                className="hidden" 
+                name="characterImage"
+                value={characterImage}
               />
             </div>
           )}
