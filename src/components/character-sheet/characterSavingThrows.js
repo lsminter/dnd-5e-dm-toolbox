@@ -14,6 +14,7 @@ export default function SavingThrows({
         name={checkboxName}
         value={checked}
         onChange={setChecked}
+        checked={checked}
       />
       <div className="flex flex-col text-end justify-end items-end">
         <span className="text-xs">{label}</span>

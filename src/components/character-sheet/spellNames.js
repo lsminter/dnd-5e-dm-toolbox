@@ -1,12 +1,20 @@
-export default function SpellNames({ spellName, spell, setSpell, checked, setChecked, checkboxName }) {
+export default function SpellNames({
+  spellName,
+  spell,
+  setSpell,
+  checked,
+  setChecked,
+  checkboxName,
+}) {
   return (
     <div className="flex justify-between p-1">
       <div className="self-center">
-        <input 
+        <input
           type="checkbox"
           name={checkboxName}
           value={checked}
           onChange={setChecked}
+          checked={checked === "true" || checked === true ? true : false}
         />
       </div>
       <div className="flex flex-col text-end content-start">

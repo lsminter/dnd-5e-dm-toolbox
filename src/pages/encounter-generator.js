@@ -104,13 +104,13 @@ export default function EncounterPage(props) {
                   className="w-10 pl-1 mx-3 bg-white text-black rounded-md"
                 />
               </div>
-              <button className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md" onClick={fetchMonsters}>Fetch Monsters</button>
+              <button className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={fetchMonsters}>Fetch Monsters</button>
             </div>
             <div className="flex justify-between">
-              <button className="px-2 border bg-defaultButton rounded-md" onClick={toggleMonsterData}>{
+              <button className="px-2 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={toggleMonsterData}>{
                 showMonsterData ? 'Hide Monster Stats' : 'Show Monster Stats'}
               </button>
-              <button className="px-2 border bg-defaultButton rounded-md" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
+              <button className="px-2 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
             </div>
           </div>
         </div>
@@ -139,13 +139,13 @@ export default function EncounterPage(props) {
               className="w-10 pl-1 mx-3 bg-white text-black rounded-md"
             />
           </div>
-          <button className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md" onClick={fetchMonsters}>Fetch Monsters</button>
+          <button className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={fetchMonsters}>Fetch Monsters</button>
         </div>
         <div className="flex justify-between pr-4">
-          <button className="px-2 border bg-defaultButton rounded-md" onClick={toggleMonsterData}>{
+          <button className="px-2 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={toggleMonsterData}>{
             showMonsterData ? 'Hide Monster Stats' : 'Show Monster Stats'}
           </button>
-          <button className="px-2 border bg-defaultButton rounded-md" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
+          <button className="px-2 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={handleResetSelectedMonsters}>Reset Selected Monsters</button>
         </div>
       </div>
 

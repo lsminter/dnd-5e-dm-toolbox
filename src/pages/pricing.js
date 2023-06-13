@@ -54,27 +54,25 @@ const Pricing = ({plans}) => {
 
   return (
     <div className="min-h-screen">
-    <div className="text-center">
-      Subscribing currently doesn&apos;t give anything, but it will in the future! 
-    </div>
       <div className="w-full max-w-3xl mx-auto py-16 flex justify-center space-x-4">
         {plans.map((plan) => (
           <div key={plan.id}>
-            {plan.active === false ? <div /> :
-              <div className="w-80 h-40 rounded shadow border-2 border-black px-6 py-4">
-                <h2 className="text-xl">{plan.name}</h2>
-                <p className="text-gray-500">
-                  ${plan.price / 100} / {plan.interval}
-                </p>
-                {!loading && (
-                  <div>
-                    {showCreateAccountButton && <button onClick={login}>Create Account</button>}
-                    {showSubscribeButton && <button onClick={processSubscription(plan.id)}>Subscribe</button>}
-                    {showManageSubscriptionButton && <Link href="/profile">Manage Subscription</Link>}
-                  </div>
-                )}
-              </div>
-            }
+            {plan.active === false ? 
+              <div /> :
+                <div className="w-60 h-30 rounded shadow border-2 border-black bg-defaultButton hover:bg-gray-400 px-6 py-4">
+                  <h2 className="text-xl">{plan.name}</h2>
+                  <p className="text-gray-500">
+                    ${plan.price / 100} / {plan.interval}
+                  </p>
+                  {!loading && (
+                    <div>
+                      {showCreateAccountButton && <button onClick={login}>Create Account</button>}
+                      {showSubscribeButton && <button onClick={processSubscription(plan.id)}>Subscribe</button>}
+                      {showManageSubscriptionButton && <Link href="/profile">Manage Subscription</Link>}
+                    </div>
+                  )}
+                </div>
+              } 
           </div>
         ))}
       </div>

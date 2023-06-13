@@ -16,8 +16,8 @@ const Profile = () => {
   const [userData, setUserData] = useState();
   const [loading, setLoading] = useState(true);
   const [pcs, setPcs] = useState();
-  const [selectedPc, setSelectedPc] = useState(undefined);
-  const [selectedPcId, setSelectedPcId] = useState(null);
+  const [pc, setPc] = useState();
+  const [toggledButtonId, setToggledButtonId] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -33,16 +33,8 @@ const Profile = () => {
           ...user,
           ...profile,
         });
-      }
-    };
-    fetchData();
-    setLoading(false);
-  }, [supabase, user]);
 
-  useEffect(() => {
-    const fetchPcs = async () => {
-      if (user) {
-        const { data: pcs, error } = await supabase
+        const { data: pcs, error: err } = await supabase
           .from("pc_characters")
           .select("*")
           .eq("id", user.id);
@@ -50,13 +42,25 @@ const Profile = () => {
         setPcs(pcs);
       }
     };
-    fetchPcs();
-  }, [user, supabase]);
+    fetchData();
+    setLoading(false);
+  }, [supabase, user]);
 
   const loadPortal = async () => {
     const { data } = await axios.get("/api/portal");
     router.push(data.url);
-  };  
+  };
+
+  const handlePc = async (pc) => {
+    
+    const { data: pcs, error } = await supabase
+      .from('pc_characters')
+      .select(('*'))
+      .eq('id', user.id)
+      .eq('pc_name', pc)
+      
+      setPc(pcs[0])
+  }
 
   return (
     <div className="min-h-screen">
@@ -88,16 +92,32 @@ const Profile = () => {
                     )}
                   </h1>
                   <div className="grid grid-cols-1 justify-items-center space-y-2">
-                    <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">
+                    <button 
+                      className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
+                      id="pc"
+                      onClick={(e) => setToggledButtonId(e.target.id)}
+                    >
                       Saved PC&apos;s
                     </button>
-                    <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">
+                    <button 
+                      className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
+                      id="npc"
+                      onClick={(e) => setToggledButtonId(e.target.id)}
+                    >
                       Saved NPC&apos;s
                     </button>
-                    <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">
+                    <button 
+                      className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
+                      id="encounter"
+                      onClick={(e) => setToggledButtonId(e.target.id)}
+                    >
                       Saved Encounters
                     </button>
-                    <button className="bg-defaultButton w-[280px] h-[50px] rounded-md">
+                    <button 
+                      className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
+                      id="campaign"
+                      onClick={(e) => setToggledButtonId(e.target.id)}
+                    >
                       Saved Campaigns
                     </button>
                   </div>
@@ -114,7 +134,7 @@ const Profile = () => {
                       <div className="text-center space-y-2">
                         <p>Subscription Status: {userData?.interval}ly</p>
                         <button
-                          className="bg-defaultButton rounded-md p-2"
+                          className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
                           onClick={loadPortal}
                         >
                           Manage Subscription
@@ -123,39 +143,74 @@ const Profile = () => {
                     ) : (
                       <div className="text-center space-y-2">
                         <p>Subscription Status: Not Subscribed</p>
-                        <Link
-                          href="/pricing"
-                          className="hover:text-purple-400"
+                        <button
+                          className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
                         >
-                          Click to go to pricing
-                        </Link>
+                          <Link href="/pricing" >Click to go to pricing</Link>
+                        </button>
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-
-              <div className="flex gap-4 justify-center">
-                {pcs?.map((pc) => (
-                  <ul key={pc.pc_name}>
-                    <button
-                      className="bg-defaultButton rounded-md p-2 justify-self-center"
-                      onClick={() => {setSelectedPc(pc.pc_name), setSelectedPcId(pc.pc_id)}}
-                    >
-                      {pc.pc_name}
-                    </button>
-                  </ul>
-                ))}
-              </div>
               
-              {!selectedPc ? (
-                <div />
-              ) : (
-                <div className="flex justify-items-center">
-                  <FullCharacterSheet pc={selectedPc} pc_id={selectedPcId} />
+              {!userData?.is_subscribed && (
+                <div className="grid justify-items-center">
+                  <p className="w-1/2 text-center p-2">Even if you aren&apos;t subscribed, all of your characters are being saved. Subscribe to view all of your saved characters.</p>
                 </div>
               )}
+
+                {toggledButtonId === "pc" && (
+                  <div className="flex gap-4 justify-center">
+                    {userData?.is_subscribed ? (
+                      pcs?.map((pc) => (
+                        <ul key={pc.pc_name}>
+                          <button
+                            className="bg-defaultButton rounded-md p-2 justify-self-center"
+                            value={pc.pc_name}
+                            onClick={(e) => {handlePc(e.target.value)}}
+                          >
+                            {pc.pc_name}
+                          </button>
+                        </ul>
+                      ))
+                    ) : (
+                      pcs?.slice(0,2).map((pc) => (
+                        <ul key={pc.pc_name}>
+                          <button
+                            className="bg-defaultButton rounded-md p-2 justify-self-center"
+                            onClick={(e) => {handlePc(e.target.value)}}
+                          >
+                            {pc.pc_name}
+                          </button>
+                        </ul>
+                      ))
+                    )}
+                  </div>
+                )}
+                {toggledButtonId === "npc" && (
+                  <div className="flex gap-4 justify-center">
+                    Saving npc&apos;s is a feature that is coming soon!
+                  </div>
+                )}
+                {toggledButtonId === "encounter" && (
+                  <div className="flex gap-4 justify-center">
+                    Saving encounter&apos;s is a feature that is coming soon!
+                  </div>
+                )}
+                {toggledButtonId === "campaign" && (
+                  <div className="flex gap-4 justify-center">
+                    Saving campaign&apos;s is a feature that is coming soon!
+                  </div>
+                )}
               
+                {!pc ? (
+                  <div />
+                ) : (
+                  <div className="grid justify-items-center">
+                    <FullCharacterSheet key={pc.pc_name} currentPc={pc} pc_id={pc.pc_id} />
+                  </div>
+                )}
             </div>
           )}
         </div>

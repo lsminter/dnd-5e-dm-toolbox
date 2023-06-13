@@ -23,7 +23,7 @@ export default function CharacterSpells({
         <div className="col-span-2">
           <div className="flex space-x-1 mr-2">
             <div className="flex">
-              <p>Slots Total</p>
+              <p className="mr-1">Slots Total</p>
               <input
                 className="w-8 text-white text-center rounded-md"
                 type="number"
@@ -33,7 +33,7 @@ export default function CharacterSpells({
               />
             </div>
             <div className="flex">
-              <p>Slots Used</p>
+              <p className="mr-1">Slots Used</p>
               <input
                 className="w-8 text-white text-center rounded-md"
                 type="number"

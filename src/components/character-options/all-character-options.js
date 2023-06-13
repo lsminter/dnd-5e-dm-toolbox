@@ -134,7 +134,7 @@ export default function AllCharacterOptions() {
           <CharacterSex className="m-2" selectedSex={() => handleCharacterSex()}/>
           <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
         </div>
-        <button className="px-2 py-2 mx-2 bg-defaultButton text-defaultText rounded-lg" type="submit">Get Character!</button>
+        <button className="px-2 py-2 mx-2 bg-defaultButton text-defaultText rounded-lg hover:bg-gray-500" type="submit">Get Character!</button>
       </form>
       <div>
       {spinner === true ? (

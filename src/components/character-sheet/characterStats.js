@@ -8,7 +8,7 @@ export default function CharacterStats({
   modifierValue,
 }) {
   return (
-    <div className="flex flex-col text-center justify-center items-center space-y-1">
+    <div className="flex flex-col text-center justify-center items-center">
       <span className="text-sm">{label}</span>
       <input
         name={name}
@@ -18,6 +18,7 @@ export default function CharacterStats({
         onChange={setStatValue}
         value={statValue}
       />
+      <p className="text-xs">mod</p>
       <input
         name={nameModifier}
         className="border rounded-md p-1 text-sm text-white w-14"

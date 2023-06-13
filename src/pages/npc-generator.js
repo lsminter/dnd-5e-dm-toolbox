@@ -103,7 +103,7 @@ export default function AllCharacterOptions({ object }) {
               <JobList jobName={selectedJob} />
             </div>
             <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
-            <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg" type="submit">Get Character!</button>
+            <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg hover:bg-gray-500" type="submit">Get Character!</button>
           </form>
         </div>
         <div className="flex max-w-[572px] justify-items-center p-2">
@@ -128,7 +128,7 @@ export default function AllCharacterOptions({ object }) {
           <JobList jobName={selectedJob} />
           <AdditionalInfo className="m-2" selectedAdditionalInfo={() => handleAdditionalInfo()}/>
         </div>
-        <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg" type="submit">Get Character!</button>
+        <button className="px-2 py-2 mx-2 bg-defaultButton rounded-lg hover:bg-gray-500" type="submit">Get Character!</button>
       </form>
       {spinner === true ? (
         <InfinitySpin 

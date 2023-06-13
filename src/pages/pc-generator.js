@@ -4,7 +4,7 @@ import CharacterRace from "../components/character-options/character-race.js";
 import CharacterSex from "../components/character-options/character-sex.js";
 import AdditionalInfo from "../components/character-options/additional-info.js";
 import FullCharacterSheet from "../components/character-sheet/fullCharacterSheet.js";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Configuration, OpenAIApi } from "openai";
 import { InfinitySpin } from "react-loader-spinner";
@@ -19,6 +19,9 @@ export default function AllCharacterOptions() {
   const [spinner, setSpinner] = useState(false);
   const [imageSpinner, setImageSpinner] = useState(false);
   const [image, setImage] = useState(undefined);
+  const [characterDescription, setCharacterDescription] = useState("");
+  const [characterBackground, setCharacterBackground] = useState("");
+  const [characterName, setCharacterName] = useState("");
   const ref = useRef(null);
 
   const handleSelectedRace = () => {
@@ -94,6 +97,12 @@ export default function AllCharacterOptions() {
   const descriptionValue = outputObject[description];
   const backgroundValue = outputObject[background];
 
+  useEffect(() => {
+    setCharacterName(nameValue)
+    setCharacterDescription(descriptionValue);
+    setCharacterBackground(backgroundValue);
+  }, [descriptionValue, backgroundValue, nameValue]);
+
   const fetchImageResponse = async () => {
     setImage(false);
     const reply = await openai.createImage({
@@ -112,17 +121,12 @@ export default function AllCharacterOptions() {
     setSpinner(true);
     fetchAIResponse()
       .then((data) => {
-        setSpinner(false);
-      })
-      .then(() => {
         setImageSpinner(true);
+        setSpinner(false);
+        fetchImageResponse().then(() => {
+          setImageSpinner(false);
+        })
       })
-      .then(() => {
-        fetchImageResponse();
-      })
-      .then(() => {
-        setImageSpinner(false);
-      });
   };
 
   const b64Image = `data:image/png;base64,${image}`
@@ -167,10 +171,10 @@ export default function AllCharacterOptions() {
               selectedAdditionalInfo={() => handleAdditionalInfo()}
             />
             <button
-              className="px-2 py-2 mx-2 bg-defaultButton rounded-lg"
+              className="px-2 py-2 mx-2 bg-defaultButton rounded-lg hover:bg-gray-500"
               type="submit"
             >
-              Get Character!
+              Create Character!
             </button>
           </form>
         </div>
@@ -212,7 +216,7 @@ export default function AllCharacterOptions() {
           />
         </div>
         <button
-          className="px-2 py-2 mx-2 bg-defaultButton rounded-lg"
+          className="px-2 py-2 mx-2 bg-defaultButton rounded-lg hover:bg-gray-500"
           type="submit"
         >
           Create Character!
@@ -220,10 +224,12 @@ export default function AllCharacterOptions() {
       </form>
       <div>
         {spinner === true ? (
-          <InfinitySpin
-            width="200"
-            color="#00008B"
-          />
+          <div className="grid place-items-center">
+            <InfinitySpin
+              width="200"
+              color="#00008B"
+            />
+          </div>
         ) : (
           <form
             ref={ref}
@@ -233,16 +239,20 @@ export default function AllCharacterOptions() {
               <h2
                 name="characterName"
                 className="text-center text-3xl bg-inherit"
+                value={characterName}
+                onChange={(e) => setCharacterName(e.target.value)}
               >
-                {nameValue}
+                {characterName}
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-4">
               {imageSpinner === true ? (
-                <InfinitySpin
-                  width="200"
-                  color="#00008B"
-                />
+                <div className="grid place-items-center">
+                  <InfinitySpin
+                    width="200"
+                    color="#00008B"
+                  />
+                </div>
               ) : (
                 <div className="flex place-self-center p-2">
                   <Image
@@ -263,7 +273,8 @@ export default function AllCharacterOptions() {
                   ) : (
                     <textarea
                       name="characterDescription"
-                      value={descriptionValue}
+                      value={characterDescription}
+                      onChange={(e) => setCharacterDescription(e.target.value)}
                       className="bg-inherit w-full"
                     />
                   )}
@@ -274,8 +285,9 @@ export default function AllCharacterOptions() {
                     <p className="hidden" />
                   ) : (
                     <textarea
-                      name="characterDescription"
-                      value={backgroundValue}
+                      name="characterBackground"
+                      value={characterBackground}
+                      onChange={(e) => setCharacterBackground(e.target.value)}
                       className="bg-inherit w-full"
                     />
                   )}
@@ -284,18 +296,24 @@ export default function AllCharacterOptions() {
             </div>
           </form>
         )}
+        
+        
+        
 
+      </div>
+      {!image ? (
+        <div />
+      ) : (
         <FullCharacterSheet
-          nameValue={nameValue}
-          background={backgroundValue}
-          description={descriptionValue}
+          nameValue={characterName}
+          background={characterBackground}
+          description={characterDescription}
           characterClass={characterClass}
           race={race}
           alignment={alignment}
-          img={characterImage}
           b64={image}
         />
-      </div>
+      )}
     </div>
   );
 }

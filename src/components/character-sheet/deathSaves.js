@@ -1,6 +1,6 @@
 export default function DeathSaves({ label }) {
   return (
-    <div className="flex justify-between p-1">
+    <div className="flex justify-between px-1">
       <div className="content-start">
         <input type="checkbox" />
         <input type="checkbox" />
