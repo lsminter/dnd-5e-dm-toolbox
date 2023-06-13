@@ -502,7 +502,7 @@ export default function FullCharacterSheet({
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
                     name="name"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
                 <div className="grid col-span-2 grid-cols-3">
@@ -514,7 +514,7 @@ export default function FullCharacterSheet({
                       value={characterCharacterClass}
                       onChange={(e) => setCharacterCharacterClass(e.target.value)}
                       name="classAndLevel"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -525,7 +525,7 @@ export default function FullCharacterSheet({
                       name="background"
                       value={characterBackground}
                       onChange={(e) => setCharacterBackground(e.target.value)}
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -536,7 +536,7 @@ export default function FullCharacterSheet({
                       name="level"
                       value={characterSpellLevel}
                       onChange={(e) => setCharacterSpellLevel(e.target.value)}
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                 </div>
@@ -551,7 +551,7 @@ export default function FullCharacterSheet({
                       name="race"
                       value={characterRace}
                       onChange={(e) => setCharacterRace(e.target.value)}
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -562,7 +562,7 @@ export default function FullCharacterSheet({
                       name="alignment"
                       value={characterAlignment}
                       onChange={(e) => setCharacterAlignment(e.target.value)}
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -573,7 +573,7 @@ export default function FullCharacterSheet({
                       name="experience"
                       value={characterExperience}
                       onChange={(e) => setCharacterExperience(e.target.value)}
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                 </div>
@@ -1150,7 +1150,7 @@ export default function FullCharacterSheet({
                     defaultValue={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
                     name="name"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
                 <div className="grid grid-cols-3">
@@ -1162,7 +1162,7 @@ export default function FullCharacterSheet({
                       value={characterAge}
                       onChange={(e) => setCharacterAge(e.target.value)}
                       name="age"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -1173,7 +1173,7 @@ export default function FullCharacterSheet({
                       value={characterHeight}
                       onChange={(e) => setCharacterHeight(e.target.value)}
                       name="height"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -1184,7 +1184,7 @@ export default function FullCharacterSheet({
                       value={characterWeight}
                       onChange={(e) => setCharacterWeight(e.target.value)}
                       name="weight"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                 </div>
@@ -1201,7 +1201,7 @@ export default function FullCharacterSheet({
                     value={characterEyes}
                     onChange={(e) => setCharacterEyes(e.target.value)}
                     name="eyes"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
                 <div>
@@ -1212,7 +1212,7 @@ export default function FullCharacterSheet({
                     value={characterSkin}
                     onChange={(e) => setCharacterSkin(e.target.value)}
                     name="skin"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
                 <div>
@@ -1223,7 +1223,7 @@ export default function FullCharacterSheet({
                     value={characterHair}
                     onChange={(e) => setCharacterHair(e.target.value)}
                     name="hair"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
               </div>
@@ -1299,7 +1299,7 @@ export default function FullCharacterSheet({
                     defaultValue={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
                     name="name"
-                    className="border rounded-md p-2 text-lg w-full text-white"
+                    className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                   />
                 </div>
                 <div className="grid grid-cols-3">
@@ -1311,7 +1311,7 @@ export default function FullCharacterSheet({
                       defaultValue={characterSpellAbility}
                       onChange={(e) => setCharacterSpellAbility(e.target.value)}
                       name="spellAbility"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -1322,7 +1322,7 @@ export default function FullCharacterSheet({
                       defaultValue={characterSpellSaveDC}
                       onChange={(e) => setCharacterSpellSaveDC(e.target.value)}
                       name="spellSaveDC"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -1335,7 +1335,7 @@ export default function FullCharacterSheet({
                         setCharacterSpellAttackBonus(e.target.value)
                       }
                       name="spellAttBonus"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                 </div>
@@ -2723,7 +2723,7 @@ export default function FullCharacterSheet({
                       value={characterName}
                       onChange={(e) => setCharacterName(e.target.value)}
                       name="name"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div className="grid">
@@ -2735,7 +2735,7 @@ export default function FullCharacterSheet({
                         value={characterCharacterClass}
                         onChange={(e) => setCharacterCharacterClass(e.target.value)}
                         name="classAndLevel"
-                        className="border rounded-md p-2 text-lg w-full text-white"
+                        className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                       />
                     </div>
                     <div>
@@ -2746,7 +2746,7 @@ export default function FullCharacterSheet({
                         name="background"
                         value={characterBackground}
                         onChange={(e) => setCharacterBackground(e.target.value)}
-                        className="border rounded-md p-2 text-lg w-full text-white"
+                        className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                       />
                     </div>
                     <div>
@@ -2757,7 +2757,7 @@ export default function FullCharacterSheet({
                         name="level"
                         value={characterSpellLevel}
                         onChange={(e) => setCharacterSpellLevel(e.target.value)}
-                        className="border rounded-md p-2 text-lg w-full text-white"
+                        className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                       />
                     </div>
                   </div>
@@ -2771,7 +2771,7 @@ export default function FullCharacterSheet({
                           name="race"
                           value={characterRace}
                           onChange={(e) => setCharacterRace(e.target.value)}
-                          className="border rounded-md p-2 text-lg w-full text-white"
+                          className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                         />
                       </div>
                       <div>
@@ -2782,7 +2782,7 @@ export default function FullCharacterSheet({
                           name="alignment"
                           value={characterAlignment}
                           onChange={(e) => setCharacterAlignment(e.target.value)}
-                          className="border rounded-md p-2 text-lg w-full text-white"
+                          className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                         />
                       </div>
                       <div>
@@ -2793,7 +2793,7 @@ export default function FullCharacterSheet({
                           name="experience"
                           value={characterExperience}
                           onChange={(e) => setCharacterExperience(e.target.value)}
-                          className="border rounded-md p-2 text-lg w-full text-white"
+                          className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                         />
                       </div>
                     </div>
@@ -3548,7 +3548,7 @@ export default function FullCharacterSheet({
                       defaultValue={characterSpellAbility}
                       onChange={(e) => setCharacterSpellAbility(e.target.value)}
                       name="spellAbility"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -3559,7 +3559,7 @@ export default function FullCharacterSheet({
                       defaultValue={characterSpellSaveDC}
                       onChange={(e) => setCharacterSpellSaveDC(e.target.value)}
                       name="spellSaveDC"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                   <div>
@@ -3572,7 +3572,7 @@ export default function FullCharacterSheet({
                         setCharacterSpellAttackBonus(e.target.value)
                       }
                       name="spellAttBonus"
-                      className="border rounded-md p-2 text-lg w-full text-white"
+                      className="border rounded-md p-2 text-lg w-full text-white bg-gr"
                     />
                   </div>
                 </div>

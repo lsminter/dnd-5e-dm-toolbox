@@ -179,6 +179,7 @@ const Profile = () => {
                         <ul key={pc.pc_name}>
                           <button
                             className="bg-defaultButton rounded-md p-2 justify-self-center"
+                            value={pc.pc_name}
                             onClick={(e) => {handlePc(e.target.value)}}
                           >
                             {pc.pc_name}
