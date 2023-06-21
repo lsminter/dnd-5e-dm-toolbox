@@ -35,7 +35,6 @@ export default function EncounterPage(props) {
 
   const fetchMonsters = async () => {
     const url = `https://api.open5e.com/monsters?cr=${challengeRating}`;
-    console.log(url)
     const newFetchedMonsters = await fetchAllMonsters(url);
 
     const updatedAllMonsters = [

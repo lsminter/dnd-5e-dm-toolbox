@@ -35,7 +35,6 @@ const Provider = ({ children }) => {
     // });
   }, [ supabase, supabaseUser]);
 
-  console.log({providerUser: user})
   const exposed = {
     user,
     loading,
