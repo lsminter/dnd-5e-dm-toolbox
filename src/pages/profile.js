@@ -1,6 +1,6 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -8,12 +8,14 @@ import Link from "next/link";
 import Image from "next/image";
 
 import FullCharacterSheet from "../components/character-sheet/fullCharacterSheet.js";
+import { useUserContext } from "../../context/user";
 
 const Profile = () => {
+  const session = useSessionContext();
+  const {user} = useUserContext();
+
   const router = useRouter();
-  const user = useUser();
   const supabase = useSupabaseClient();
-  const [userData, setUserData] = useState();
   const [loading, setLoading] = useState(true);
   const [pcs, setPcs] = useState();
   const [pc, setPc] = useState();
@@ -23,17 +25,6 @@ const Profile = () => {
     setLoading(true);
     const fetchData = async () => {
       if (user) {
-        const { data: profile, error } = await supabase
-          .from("profile")
-          .select("*")
-          .eq("id", user.id)
-          .single();
-
-        setUserData({
-          ...user,
-          ...profile,
-        });
-
         const { data: pcs, error: err } = await supabase
           .from("pc_characters")
           .select("*")
@@ -62,11 +53,13 @@ const Profile = () => {
       setPc(pcs[0])
   }
 
+  const authView = session.isLoading = false
+
   return (
     <div className="min-h-screen">
-      {!loading && (
+      {!session.isLoading && (
         <div className="mt-8">
-          {!userData ? (
+          {authView ? (
             <div className="p-4">
               <Auth
                 redirectTo={`${process.env.CLIENT_URL}/profile`}
@@ -81,13 +74,13 @@ const Profile = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 text-center m-4 space-x-4">
                 <div className="grid grid-cols-1">
                   <h1 className="text-2xl">
-                    {userData?.email ? (
+                    {user?.email ? (
                       <div className="grid justify-items-center">
-                        {userData?.email}
+                        {user?.email}
                       </div>
                     ) : (
                       <div className="grid justify-items-center">
-                        {userData?.user_metadata.email}
+                        {user?.user_metadata.email}
                       </div>
                     )}
                   </h1>
@@ -130,9 +123,9 @@ const Profile = () => {
                     height={300}
                   />
                   <div className="mt-8 space-y-2">
-                    {userData?.is_subscribed ? (
+                    {user?.is_subscribed ? (
                       <div className="text-center space-y-2">
-                        <p>Subscription Status: {userData?.interval}ly</p>
+                        <p>Subscription Status: {user?.interval}</p>
                         <button
                           className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
                           onClick={loadPortal}
@@ -154,7 +147,7 @@ const Profile = () => {
                 </div>
               </div>
               
-              {!userData?.is_subscribed && (
+              {!user?.is_subscribed && (
                 <div className="grid justify-items-center">
                   <p className="w-1/2 text-center p-2">Even if you aren&apos;t subscribed, all of your characters are being saved. Subscribe to view all of your saved characters.</p>
                 </div>
@@ -162,7 +155,7 @@ const Profile = () => {
 
                 {toggledButtonId === "pc" && (
                   <div className="flex gap-4 justify-center">
-                    {userData?.is_subscribed ? (
+                    {user?.is_subscribed ? (
                       pcs?.map((pc) => (
                         <ul key={pc.pc_name}>
                           <button
