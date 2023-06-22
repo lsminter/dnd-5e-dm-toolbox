@@ -39,10 +39,16 @@ const Profile = () => {
           .eq("user_id", user.id);
 
         setEncounters(userEncounters);
+
+        const subscription = supabase
+          .channel('any')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'monster_encounters' })
+          .subscribe()
+          
       }
     };
     fetchData();
-  }, [supabase, user]);
+  }, [supabase, user, encounters]);
 
   const loadPortal = async () => {
     const { data } = await axios.get("/api/portal");
@@ -68,6 +74,14 @@ const Profile = () => {
 
       setEncounter(singleEncounter[0])
   }
+
+  const handleDeleteEncounter = async (encounter) => {
+    console.log(encounter)
+    const { data: deletedEncounter, error } = await supabase
+      .from('monster_encounters')
+      .delete()
+      .eq('id', encounter)
+  } 
 
   return (
     <div className="min-h-screen">
@@ -247,7 +261,16 @@ const Profile = () => {
                         <div />
                       ) : (
                         <div className="grid">
-                          <h2 className="text-center text-3xl font-bold m-4">{encounter.encounter_name}</h2>
+                          <div className="flex gap-4 justify-center">
+                            <h2 className="text-center text-3xl font-bold m-4">{encounter.encounter_name}</h2>
+                            <button 
+                              className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500 self-center"
+                              id="delete"
+                              onClick={(e) => handleDeleteEncounter(encounter.id)}
+                            >
+                              Delete Encounter
+                            </button>
+                          </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 p-2 gap-2">
                             {encounter.encounter.map((monster, index) => (
                               <MonsterCard monsters={monster} key={index} />
