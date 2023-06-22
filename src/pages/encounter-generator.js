@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
 import { InfinitySpin } from 'react-loader-spinner'
+import MonsterCard from '../components/random-encounter/monster-cards.js';
+import { useUser, useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function EncounterPage(props) {
+  const user = useUser();
+  const supabase = useSupabaseClient();
   const [challengeRating, setChallengeRating] = useState('');
   const [allMonsters, setAllMonsters] = useState([]); 
   const [monsters, setMonsters] = useState([]);
@@ -11,6 +15,7 @@ export default function EncounterPage(props) {
   const [showMonsterData, setShowMonsterData] = useState(false);
   const [monsterStats, setMonsterStats] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [encounterName, setEncounterName] = useState('');
 
   const fetchAllMonsters = async (url, fetchedMonsters = new Set()) => {
     try {
@@ -52,11 +57,13 @@ export default function EncounterPage(props) {
       const monster = allMonsters.find((monster) => {
         return monster.name === name;
       });
+      
       if(monster) {
         acc.push(monster);
       }
       return acc;
     }, []);
+
     setMonsterStats(stats);
   };
 
@@ -78,6 +85,13 @@ export default function EncounterPage(props) {
     setMonsters([]);
     setAllMonsters([]);
   };
+
+  const handleSavingEncounter = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase
+      .from('monster_encounters')
+      .insert({user_id: user.id, encounter_name: encounterName, encounter: monsterStats})
+  }
 
   return (
     <div className="min-h-screen">
@@ -186,134 +200,24 @@ export default function EncounterPage(props) {
 
       {showMonsterData && (
         <div className="p-2 space-y-2">
-          <h3 className="text-center text-4xl font-bold">Monster Data</h3>
+          <div className="grid gap-4">
+            <h3 className="text-center text-4xl font-bold">Monster Data</h3>
+            <div className="flex justify-center gap-4">
+              <input 
+                onChange={(e) => setEncounterName(e.target.value)}
+                placeholder="Name your encounter" 
+                className="border rounded-md p-2 text-lg w-64 text-white bg-gray-700"/>
+              <button
+                onClick={handleSavingEncounter}
+                className="bg-defaultButton w-[190px] h-[50px] rounded-md hover:bg-gray-500 place-self-center"
+              >
+                Save Encounter
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 p-2 gap-2">
           {monsterStats.map((monster, index) => (
-            <div key={index} className="grid grid-cols-2 p-2 bg-defaultButton rounded-md">
-              <div className="pb-2 space-y-2">
-                <div>
-                  <p className="text-2xl">{monster.name}</p>
-                    <h2 className="flex space-x-2">
-                      <div>
-                        <p className="text-sm">Total HP:</p>
-                        <p>{monster.hit_points}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm">Damage Taken:</p> 
-                        <input placeholder={monster.hit_points} className="w-16 mx-2 p-1 bg-[#FF8793] text-black rounded-md text-sm" type="number" />
-                      </div>
-                    </h2>
-                  </div>
-                  <p>
-                    Type: {monster.type}
-                  </p>
-                  <p>
-                    Alignment: {monster.alignment}
-                  </p>
-                  <p>
-                    Languages: {monster.languages}
-                  </p>
-                  <p>
-                    Armor Class: {monster.armor_class}
-                  </p>
-                  <div className="grid grid-cols-2">
-                    <p>
-                    Str: {monster.strength}
-                    </p>
-                    <p>
-                    Dex: {monster.dexterity}
-                    </p>
-                    <p>
-                    Con: {monster.constitution}
-                    </p>
-                    <p>
-                    Int: {monster.intelligence}
-                    </p>
-                    <p>
-                    Wis: {monster.wisdom}
-                    </p>
-                    <p>
-                    Char: {monster.charisma}
-                    </p>
-                  </div>
-                  <div className="flex">
-                    <p className="mr-1">Speed:</p>
-                    <p className="flex space-x-1">
-                      {Object.entries(monster.speed).map(([key, val]) => {
-                        return <p key={key}>{key}:{val}</p>
-                      })}
-                    </p> 
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p>
-                    Str Save: {monster.strength_save}
-                    </p>
-                    <p>
-                    Dex Save: {monster.dexterity_save}
-                    </p>
-                    <p>
-                    Con Save: {monster.constitution_save}
-                    </p>
-                    <p>
-                    Int Save: {monster.intelligence_save}
-                    </p>
-                    <p>
-                    Wis Save: {monster.wisdom_save}
-                    </p>
-                    <p>
-                    Char Save: {monster.charisma_save}
-                    </p>
-                  </div>
-                  <p>
-                    Damage Vulnerabilities: {monster.damage_vulnerabilities ? monster.damage_vulnerabilities : "None"}
-                  </p>
-                  <p>
-                    Damage Resistances: {monster.damage_resistances ? monster.damage_resistances : "None"}
-                  </p>
-                  <p>
-                    Damage Immunities: {monster.damage_immunities ? monster.damage_immunities : "None"}
-                  </p>
-                  <p>
-                    Condition Immunities: {monster.condition_immunities ? monster.condition_immunities : "None"}
-                  </p>
-                  <p>
-                    Senses: {monster.senses ? monster.senses : "None"}
-                  </p>
-                </div>
-              
-
-                <div>
-                  <h2 className="space-y-2">
-                    <p className="text-2xl">Actions</p> 
-                    {monster.actions === "" ? (
-                      <p>No actions</p>
-                    ) : (
-                      <div>
-                        {monster.actions.map((actions) => {
-                          return (
-                            <h3 key={actions.name}><p className="text-lg italic">{actions.name}:</p> <p className="text-sm">{actions.desc}</p></h3>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </h2>
-
-                  <h2>
-                    <p className="text-xl">Legendary Actions</p> 
-                    {monster.legendary_actions === "" ? (
-                      <p>No Legendary Actions</p>
-                    ) : (
-                      <div>
-                        {monster.legendary_actions.map((actions) => {
-                          return (
-                            <h3 key={actions.name}><p className="text-lg italic">{actions.name}:</p> <p className="text-sm">{actions.desc}</p></h3>
-                          )
-                        })}
-                      </div>
-                    )}
-                  </h2>
-                </div>
-            </div>
+            <MonsterCard monsters={monster} key={index} />
           ))}
           </div>
         </div>
@@ -321,57 +225,3 @@ export default function EncounterPage(props) {
     </div>
   )
 }
-
-
-
-/*
-Things needed for monster stats
-Name, type, alignment, AC, HP, Speed, Stats, Skills, Senses, Languages, Challenge Rating, Proficiency Bonus, Special Abilities, Actions, Description, Spell List, 
-
-
-actions: (4) [{…}, {…}, {…}, {…}]
-alignment: "lawful evil"
-armor_class: 17
-armor_desc: "natural armor"
-challenge_rating: "10"
-charisma: 18
-charisma_save: null
-condition_immunities: ""
-constitution: 15
-constitution_save: 6
-cr: 10
-damage_immunities: ""
-damage_resistances: ""
-damage_vulnerabilities: ""
-dexterity: 9
-dexterity_save: null
-document__license_url: "http://open5e.com/legal"
-document__slug: "wotc-srd"
-document__title: "Systems Reference Document"
-group: null
-hit_dice: "18d10+36"
-hit_points: 135
-img_main: "http://api.open5e.com/static/img/monsters/aboleth.png"
-intelligence: 18
-intelligence_save: 8
-languages: "Deep Speech, telepathy 120 ft."
-legendary_actions: (3) [{…}, {…}, {…}]
-legendary_desc: "The aboleth can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The aboleth regains spent legendary actions at the start of its turn."
-name: "Aboleth"
-page_no: 261
-perception: 10
-reactions: ""
-senses: "darkvision 120 ft., passive Perception 20"
-size: "Large"
-skills: {history: 12, perception: 10}
-slug: "aboleth"
-special_abilities: (3) [{…}, {…}, {…}]
-speed: {walk: 10, swim: 40}
-spell_list: []
-strength: 21
-strength_save: null
-subtype: ""
-type: "aberration"
-wisdom: 15
-wisdom_save: 6
-*/
