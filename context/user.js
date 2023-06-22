@@ -1,17 +1,17 @@
-import { createContext, useState, useEffect, useContext } from "react";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
+import { useSupabaseClient, useUser, useSessionContext } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
 
 const Context = createContext();
 
 const Provider = ({ children }) => {
+  const router = useRouter();
   const supabase = useSupabaseClient();
-  const supabaseUser = useUser()
+  const supabaseUser = useUser();
   const [user, setUser] = useState(supabaseUser);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUserProfile = async () => {
-
       if (supabaseUser) {
         const { data: profile } = await supabase
           .from("profile")
@@ -23,22 +23,25 @@ const Provider = ({ children }) => {
           ...supabaseUser,
           ...profile,
         });
-
-        setLoading(false);
-      };
-    } 
+      }
+    }
 
     getUserProfile();
 
-    // supabase.auth.onAuthStateChange(() => {
-    //   getUserProfile();
-    // });
-  }, [ supabase, supabaseUser]);
+    supabase.auth.onAuthStateChange(() => {
+      setUser(supabaseUser)
+    });
+  }, [supabase, supabaseUser]);
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    router.push("/profile");
+  };
 
   const exposed = {
     user,
-    loading,
-    supabase
+    supabase,
+    logout
   };
 
   return (

@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-            <Provider>
+      <Provider>
         <div className="grid min-h-screen bg-site-background bg-opacity-80 text-defaultText">
           <QueryClientProvider client={queryClient}>
             <NavBar />
@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }) {
           </QueryClientProvider>
           <Analytics />
         </div>
-            </Provider>
+      </Provider>
     </SessionContextProvider>
   )
 }

@@ -17,7 +17,6 @@ const Profile = () => {
 
   const router = useRouter();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(true);
   const [pcs, setPcs] = useState();
   const [pc, setPc] = useState();
   const [encounters, setEncounters] = useState();
@@ -25,7 +24,6 @@ const Profile = () => {
   const [toggledButtonId, setToggledButtonId] = useState("");
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
       if (user) {
         const { data: pcs, error: err } = await supabase
@@ -44,7 +42,6 @@ const Profile = () => {
       }
     };
     fetchData();
-    setLoading(false);
   }, [supabase, user]);
 
   const loadPortal = async () => {
@@ -72,13 +69,13 @@ const Profile = () => {
       setEncounter(singleEncounter[0])
   }
 
-  const authView = session.isLoading = false
-
   return (
     <div className="min-h-screen">
-      {!session.isLoading && (
+      {session.isLoading ? (
+        <div />
+      ) : (
         <div className="mt-8">
-          {authView ? (
+          {!user ? (
             <div className="p-4">
               <Auth
                 redirectTo={`${process.env.CLIENT_URL}/profile`}
@@ -99,7 +96,7 @@ const Profile = () => {
                       </div>
                     ) : (
                       <div className="grid justify-items-center">
-                        {user?.user_metadata.email}
+                        {user?.user_metadata?.email}
                       </div>
                     )}
                   </h1>
