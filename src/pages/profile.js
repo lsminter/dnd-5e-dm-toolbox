@@ -9,6 +9,7 @@ import Image from "next/image";
 
 import FullCharacterSheet from "../components/character-sheet/fullCharacterSheet.js";
 import { useUserContext } from "../../context/user";
+import MonsterCard from "../components/random-encounter/monster-cards.js";
 
 const Profile = () => {
   const session = useSessionContext();
@@ -19,6 +20,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [pcs, setPcs] = useState();
   const [pc, setPc] = useState();
+  const [encounters, setEncounters] = useState();
+  const [encounter, setEncounter] = useState();
   const [toggledButtonId, setToggledButtonId] = useState("");
 
   useEffect(() => {
@@ -31,6 +34,13 @@ const Profile = () => {
           .eq("id", user.id);
 
         setPcs(pcs);
+
+        const {data: userEncounters, error: err2} = await supabase
+          .from("monster_encounters")
+          .select("*")
+          .eq("user_id", user.id);
+
+        setEncounters(userEncounters);
       }
     };
     fetchData();
@@ -43,7 +53,6 @@ const Profile = () => {
   };
 
   const handlePc = async (pc) => {
-    
     const { data: pcs, error } = await supabase
       .from('pc_characters')
       .select(('*'))
@@ -51,6 +60,16 @@ const Profile = () => {
       .eq('pc_name', pc)
       
       setPc(pcs[0])
+  }
+
+  const handleEncounter = async (selectedEncounter) => {
+    const { data: singleEncounter, error } = await supabase
+      .from('monster_encounters')
+      .select(('*'))
+      .eq('user_id', user.id)
+      .eq('encounter_name', selectedEncounter)
+
+      setEncounter(singleEncounter[0])
   }
 
   const authView = session.isLoading = false
@@ -149,39 +168,49 @@ const Profile = () => {
               
               {!user?.is_subscribed && (
                 <div className="grid justify-items-center">
-                  <p className="w-1/2 text-center p-2">Even if you aren&apos;t subscribed, all of your characters are being saved. Subscribe to view all of your saved characters.</p>
+                  <p className="w-1/2 text-center p-2">Even if you aren&apos;t subscribed, everything is still being saved. Subscribe to view all of your saved items.</p>
                 </div>
               )}
 
                 {toggledButtonId === "pc" && (
-                  <div className="flex gap-4 justify-center">
-                    {user?.is_subscribed ? (
-                      pcs?.map((pc) => (
-                        <ul key={pc.pc_name}>
-                          <button
-                            className="bg-defaultButton rounded-md p-2 justify-self-center"
-                            value={pc.pc_name}
-                            onClick={(e) => {handlePc(e.target.value)}}
-                          >
-                            {pc.pc_name}
-                          </button>
-                        </ul>
-                      ))
+                  <div className="grid">
+                    <div className="flex gap-4 justify-center">
+                      {user?.is_subscribed ? (
+                        pcs?.map((pc) => (
+                          <ul key={pc.pc_name}>
+                            <button
+                              className="bg-defaultButton rounded-md p-2 justify-self-center"
+                              value={pc.pc_name}
+                              onClick={(e) => {handlePc(e.target.value)}}
+                            >
+                              {pc.pc_name}
+                            </button>
+                          </ul>
+                        ))
+                      ) : (
+                        pcs?.slice(0,2).map((pc) => (
+                          <ul key={pc.pc_name}>
+                            <button
+                              className="bg-defaultButton rounded-md p-2 justify-self-center"
+                              value={pc.pc_name}
+                              onClick={(e) => {handlePc(e.target.value)}}
+                            >
+                              {pc.pc_name}
+                            </button>
+                          </ul>
+                        ))
+                      )}
+                    </div>
+                    {!pc ? (
+                      <div />
                     ) : (
-                      pcs?.slice(0,2).map((pc) => (
-                        <ul key={pc.pc_name}>
-                          <button
-                            className="bg-defaultButton rounded-md p-2 justify-self-center"
-                            value={pc.pc_name}
-                            onClick={(e) => {handlePc(e.target.value)}}
-                          >
-                            {pc.pc_name}
-                          </button>
-                        </ul>
-                      ))
+                      <div className="grid justify-items-center">
+                        <FullCharacterSheet key={pc.pc_name} currentPc={pc} pc_id={pc.pc_id} />
+                      </div>
                     )}
                   </div>
                 )}
+                
                 {toggledButtonId === "npc" && (
                   <div className="flex gap-4 justify-center">
                     Saving npc&apos;s is a feature that is coming soon!
@@ -189,20 +218,52 @@ const Profile = () => {
                 )}
                 {toggledButtonId === "encounter" && (
                   <div className="flex gap-4 justify-center">
-                    Saving encounter&apos;s is a feature that is coming soon!
+                    <div className="grid">
+                      <div className="flex gap-4 justify-center">
+                        {user?.is_subscribed ? (
+                          encounters?.map((encounter) => (
+                            <ul key={encounter.encounter_name}>
+                              <button
+                                className="bg-defaultButton rounded-md p-2 justify-self-center"
+                                value={encounter.encounter_name}
+                                onClick={(e) => {handleEncounter(e.target.value)}}
+                              >
+                                {encounter.encounter_name}
+                              </button>
+                            </ul>
+                          ))
+                        ) : (
+                          encounters?.slice(0,2).map((encounter) => (
+                            <ul key={encounter.encounter_name}>
+                              <button
+                                className="bg-defaultButton rounded-md p-2 justify-self-center"
+                                value={encounter.encounter_name}
+                                onClick={(e) => {handleEncounter(e.target.value)}}
+                              >
+                                {encounter.encounter_name}
+                              </button>
+                            </ul>
+                          ))
+                        )}
+                      </div>
+                      {!encounter ? (
+                        <div />
+                      ) : (
+                        <div className="grid">
+                          <h2 className="text-center text-3xl font-bold m-4">{encounter.encounter_name}</h2>
+                          <div className="grid grid-cols-1 md:grid-cols-2 p-2 gap-2">
+                            {encounter.encounter.map((monster, index) => (
+                              <MonsterCard monsters={monster} key={index} />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
                 {toggledButtonId === "campaign" && (
                   <div className="flex gap-4 justify-center">
                     Saving campaign&apos;s is a feature that is coming soon!
-                  </div>
-                )}
-              
-                {!pc ? (
-                  <div />
-                ) : (
-                  <div className="grid justify-items-center">
-                    <FullCharacterSheet key={pc.pc_name} currentPc={pc} pc_id={pc.pc_id} />
                   </div>
                 )}
             </div>
