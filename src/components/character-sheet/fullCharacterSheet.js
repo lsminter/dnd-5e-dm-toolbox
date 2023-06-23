@@ -16,6 +16,7 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { decode } from 'base64-arraybuffer'
+import toast from 'react-hot-toast';
 
 export default function FullCharacterSheet({
   nameValue,
@@ -37,6 +38,7 @@ export default function FullCharacterSheet({
   const [characterName, setCharacterName] = useState(() => !pc ? nameValue : pc.pc_name);
   const [characterDescription, setCharacterDescription] = useState(() => !pc ? description : pc.pc_data.characterAppearance);
   const [characterBackground, setCharacterBackground] = useState(() => !pc ? background : pc.pc_data.characterBackground);
+  const [classBackground, setClassBackground] = useState(() => !pc ? "" : pc.pc_data.classBackground);
   const [characterCharacterClass, setCharacterCharacterClass] = useState(() => !pc ? characterClass : pc.pc_data.classAndLevel);
   const [characterRace, setCharacterRace] = useState(() => !pc ? race : pc.pc_data.race);
   const [characterAlignment, setCharacterAlignment] = useState(() => !pc ? alignment : pc.pc_data.alignment);
@@ -440,7 +442,8 @@ export default function FullCharacterSheet({
           cacheControl: '3600',
           upsert: false,
           contentType: 'image/png'
-        })
+        })        
+        toast.success(`${characterName} saved!`)
     }
   };
 
@@ -451,6 +454,7 @@ export default function FullCharacterSheet({
       .from('pc_characters')
       .update({pc_data: data})
       .eq('pc_id', pcId)
+    toast.success(`${characterName} updated!`)
   };
 
   let name = !pc ? nameValue : pc.pc_name;
@@ -535,8 +539,8 @@ export default function FullCharacterSheet({
                       type="text"
                       placeholder="Background"
                       name="background"
-                      value={characterBackground}
-                      onChange={(e) => setCharacterBackground(e.target.value)}
+                      value={classBackground}
+                      onChange={(e) => setClassBackground(e.target.value)}
                       className="border rounded-md p-2 text-lg w-full text-white bg-gray-700"
                     />
                   </div>
@@ -2756,8 +2760,8 @@ export default function FullCharacterSheet({
                         type="text"
                         placeholder="Background"
                         name="background"
-                        value={characterBackground}
-                        onChange={(e) => setCharacterBackground(e.target.value)}
+                        value={classBackground}
+                        onChange={(e) => setClassBackground(e.target.value)}
                         className="border rounded-md p-2 text-lg w-full text-white bg-gray-700"
                       />
                     </div>
