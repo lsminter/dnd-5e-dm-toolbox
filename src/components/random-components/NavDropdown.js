@@ -5,7 +5,6 @@ export default function NavDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { name: "Profile", link: "/profile" },
     { name: "Pricing", link: "/pricing" },
     { name: "NPC Generator", link: "/npc-generator" },
     { name: "PC Generator", link: "/pc-generator" },
@@ -18,7 +17,7 @@ export default function NavDropdown() {
       <div>
         <button
           type="button"
-          className="inline-flex justify-center w-[144px] px-4 py-2 text-xl font-medium text-white bg-[#120002] rounded-md"
+          className="inline-flex justify-center w-28 px-4 py-2 text-xl font-medium text-white bg-[#120002] rounded-md"
           id="options-menu"
           aria-expanded="true"
           aria-haspopup="true"
@@ -44,7 +43,7 @@ export default function NavDropdown() {
       <div
         className={`${
           isOpen ? "block" : "hidden"
-        } z-10 mx-2 origin-top-right absolute right-0 mt-2 w-72 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+        } z-10 mx-2 origin-top-right absolute right-0 mt-2 w-44 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="options-menu"
