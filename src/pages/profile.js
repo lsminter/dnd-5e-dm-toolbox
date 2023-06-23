@@ -1,6 +1,6 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useUser, useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -41,10 +41,9 @@ const Profile = () => {
         setEncounters(userEncounters);
 
         const subscription = supabase
-          .channel('any')
+          .channel('custom-all-channel')
           .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'monster_encounters' })
           .subscribe()
-          
       }
     };
     fetchData();

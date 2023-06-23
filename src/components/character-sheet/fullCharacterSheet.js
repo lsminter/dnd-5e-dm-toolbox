@@ -388,6 +388,16 @@ export default function FullCharacterSheet({
     setImageValue();
   }, [user, supabase, characterName])
 
+  const pcCharacters = supabase.channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'pc_characters' },
+      (payload) => {
+        console.log('Change received!', payload)
+      }
+    )
+    .subscribe()
+
   const handleSavePc = async (e) => {
     e.preventDefault();
     const data = formToJSON(ref.current);
@@ -419,8 +429,10 @@ export default function FullCharacterSheet({
         .from('pc_characters')
         .select('*')
         .eq('pc_name', characterName)
+        .eq('id', user.id)
 
-      
+      setPcId(newPc[0].pc_id)
+      console.log(pcId)
   
       const { data: image, error: imgError } = await supabase.storage
         .from('dnd_images')
@@ -438,7 +450,7 @@ export default function FullCharacterSheet({
     const { error } = await supabase
       .from('pc_characters')
       .update({pc_data: data})
-      .eq('pc_id', pc.pc_id)
+      .eq('pc_id', pcId)
   };
 
   let name = !pc ? nameValue : pc.pc_name;
