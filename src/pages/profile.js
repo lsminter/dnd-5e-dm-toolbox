@@ -6,6 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 import FullCharacterSheet from "../components/character-sheet/fullCharacterSheet.js";
 import { useUserContext } from "../../context/user";
@@ -13,7 +14,7 @@ import MonsterCard from "../components/random-encounter/monster-cards.js";
 
 const Profile = () => {
   const session = useSessionContext();
-  const {user} = useUserContext();
+  const {user, logout} = useUserContext();
 
   const router = useRouter();
   const supabase = useSupabaseClient();
@@ -80,6 +81,9 @@ const Profile = () => {
       .from('monster_encounters')
       .delete()
       .eq('id', encounter)
+
+    toast.success('Encounter Deleted!')
+    setEncounter(null)
   } 
 
   return (
@@ -114,6 +118,12 @@ const Profile = () => {
                     )}
                   </h1>
                   <div className="grid grid-cols-1 justify-items-center space-y-2">
+                    <button 
+                      className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
+                      onClick={() => logout()}
+                    >
+                      LOGOUT
+                    </button>
                     <button 
                       className="bg-defaultButton w-[280px] h-[50px] rounded-md hover:bg-gray-500"
                       id="pc"

@@ -4,7 +4,7 @@ import ToolsCard from '../components/home-page-components/toolsCard.js';
 export default function Home() {
 
   return (
-    <div className="min-h-screen mx-[24px] text-defaultColor">
+    <div className="min-h-screen mx-[24px] text-defaultColor max-w-7xl place-self-center">
       <div className="grid justify-items-center md:grid-cols-2 mt-4 md:mt-10 md:space-x-4">
         <div className="space-y-4 p-4 max-w-[572px]">
           <h1 className="md:text-3xl text-4xl leading-none tracking-normal text-left font-[dmt]">

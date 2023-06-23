@@ -8,6 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import Provider from '../../context/user.js'
+import { Toaster } from 'react-hot-toast';
 
 
 export default function App({ Component, pageProps }) {
@@ -19,6 +20,7 @@ export default function App({ Component, pageProps }) {
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
+    <Toaster />
       <Provider>
         <div className="grid min-h-screen bg-site-background bg-opacity-80 text-defaultText">
           <QueryClientProvider client={queryClient}>

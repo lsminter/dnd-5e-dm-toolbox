@@ -4,11 +4,13 @@ import Image from 'next/image';
 import { InfinitySpin } from 'react-loader-spinner'
 import MonsterCard from '../components/random-encounter/monster-cards.js';
 import { useUser, useSessionContext, useSupabaseClient } from "@supabase/auth-helpers-react";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 export default function EncounterPage(props) {
   const user = useUser();
   const supabase = useSupabaseClient();
-  const [challengeRating, setChallengeRating] = useState('');
+  const [challengeRating, setChallengeRating] = useState(1);
   const [allMonsters, setAllMonsters] = useState([]); 
   const [monsters, setMonsters] = useState([]);
   const [selectedMonsters, setSelectedMonsters] = useState([]);
@@ -17,7 +19,7 @@ export default function EncounterPage(props) {
   const [loading, setLoading] = useState(false);
   const [encounterName, setEncounterName] = useState('');
 
-  const fetchAllMonsters = async (url, fetchedMonsters = new Set()) => {
+  const fetchAllMonsters = async (url, fetchedMonsters = new Set()) => {    
     try {
       const response = await axios.get(url);
       const { results, next } = response.data; 
@@ -91,10 +93,14 @@ export default function EncounterPage(props) {
     const { error } = await supabase
       .from('monster_encounters')
       .insert({user_id: user.id, encounter_name: encounterName, encounter: monsterStats})
+
+    if (error) {
+      console.error('Error saving encounter:', error.message);
+    }
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen max-w-7xl place-self-center">
       <div className="grid justify-items-center md:grid-cols-2 my-4 md:mt-10 md:space-x-4">
         <div className="space-y-4 p-4 max-w-[572px]">
           <h1 className="md:text-3xl text-4xl leading-none tracking-normal text-center sm:text-left font-[dmt]">
@@ -113,11 +119,17 @@ export default function EncounterPage(props) {
                   type="number"
                   value={challengeRating}
                   onChange={(e) => setChallengeRating(e.target.value)}
-                  placeholder="CR"
+                  placeholder="1"
                   className="w-10 pl-1 mx-3 bg-white text-black rounded-md"
+                  required
                 />
               </div>
-              <button className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={fetchMonsters}>Fetch Monsters</button>
+              <button 
+                className="px-2 w-1/2 h-8 border bg-defaultButton rounded-md hover:bg-gray-500" 
+                onClick={fetchMonsters}
+              >
+                Fetch Monsters
+              </button>
             </div>
             <div className="flex justify-between">
               <button className="px-2 border bg-defaultButton rounded-md hover:bg-gray-500" onClick={toggleMonsterData}>{
@@ -208,7 +220,7 @@ export default function EncounterPage(props) {
                 placeholder="Name your encounter" 
                 className="border rounded-md p-2 text-lg w-64 text-white bg-gray-700"/>
               <button
-                onClick={handleSavingEncounter}
+                onClick={(e) => {handleSavingEncounter(e), toast.success('Encounter Saved!')}}
                 className="bg-defaultButton w-[190px] h-[50px] rounded-md hover:bg-gray-500 place-self-center"
               >
                 Save Encounter
