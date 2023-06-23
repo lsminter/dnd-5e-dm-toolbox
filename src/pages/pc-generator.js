@@ -8,8 +8,11 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Configuration, OpenAIApi } from "openai";
 import { InfinitySpin } from "react-loader-spinner";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function AllCharacterOptions() {
+  const supabase = useSupabaseClient();
+
   const [race, setRace] = useState("Dragonborn");
   const [characterClass, setCharacterClass] = useState("Barbarian");
   const [alignment, setAlignment] = useState("Chaotic Evil");
@@ -295,10 +298,7 @@ export default function AllCharacterOptions() {
               </div>
             </div>
           </form>
-        )}
-        
-        
-        
+        )}        
 
       </div>
       {!image ? (
