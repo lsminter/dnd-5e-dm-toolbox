@@ -48,11 +48,11 @@ const MonsterCard = (monsters) => {
         </div>
         <div className="flex">
           <p className="mr-1">Speed:</p>
-          {/* <p className="flex space-x-1">
+          <p className="flex space-x-1">
               {Object.entries(monster.speed).map(([key, val]) => {
                 return <p key={key}>{key}:{val}</p>
               })}
-            </p>  */}
+            </p> 
         </div>
         <div className="grid grid-cols-2">
           <p>Str Save: {monster.strength_save}</p>

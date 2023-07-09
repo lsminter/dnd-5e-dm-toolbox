@@ -3,18 +3,27 @@ import CharacterSex from '../components/character-options/character-sex.js'
 import JobSelect from '../components/character-options/npc-profession.js'
 import JobList from '../components/character-options/npc-job.js'
 import AdditionalInfo from '../components/character-options/additional-info.js'
-import { useState } from 'react';
+import NpcCard from '../components/npc-components/npc-component.js'
+import { useState, useEffect } from 'react';
 import { Configuration, OpenAIApi } from 'openai';
 import { InfinitySpin } from 'react-loader-spinner'
 import Image from 'next/image'
+import toast from 'react-hot-toast';
+import { useUserContext } from "../../context/user";
 
 export default function AllCharacterOptions({ object }) {
+  const { supabase, user } = useUserContext();
+
   const [race, setRace] = useState("Dragonborn")
   const [sex, setSex] = useState("Male")
   const [selectedJob, setSelectedJob] = useState('');
   const [aiResponse, setAiResponse] = useState("")
   const [spinner, setSpinner] = useState(false)
   const [additionalInfo, setAdditionalInfo] = useState("")
+  const [npcName, setNpcName] = useState("")
+  const [npcDescription, setNpcDescription] = useState("")
+  const [npcBackground, setNpcBackground] = useState("")
+  const [npcId, setNpcId] = useState("")
 
   const handleSelectedRace = () => {
     const selectedRace = document?.getElementById("race")?.value;
@@ -40,7 +49,7 @@ export default function AllCharacterOptions({ object }) {
   const openai = new OpenAIApi(configuration);
 
   const fetchAIResponse = async () => {
-    const completion = await openai.createChatCompletion({
+    const {data: completion, error} = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{role: "user", content: `
       I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a very short, 100 characters max, character description with no filler words but add scales color, eye color, and height. For the background, write a short background for a 5E DND character around 300 characters max.
@@ -50,8 +59,13 @@ export default function AllCharacterOptions({ object }) {
       Description: Description
       Background: Background`}],
     });
+    if(error) {
+      toast.error("Something went wrong, please refresh and try again.", {
+        duration: 10000,
+      })
+    }
     setAiResponse(() => {
-      return completion.data.choices[0].message.content;
+      return completion.choices[0].message.content;
     })
   }
 
@@ -68,9 +82,15 @@ export default function AllCharacterOptions({ object }) {
   const description = Object.keys(outputObject)[1]
   const background = Object.keys(outputObject)[2]
 
-  const nameValue = outputObject[name];
-  const descriptionValue = outputObject[description];
-  const backgroundValue = outputObject[background];
+  const aiNpcName = outputObject[name];
+  const aiNpcDescription = outputObject[description];
+  const aiNpcBackground = outputObject[background];
+
+  useEffect(() => {
+    setNpcName(aiNpcName);
+    setNpcDescription(aiNpcDescription);
+    setNpcBackground(aiNpcBackground);
+  }, [aiNpcName, aiNpcDescription, aiNpcBackground])
   
   const handleAllOptions = (e) => {
     e.preventDefault();
@@ -136,34 +156,18 @@ export default function AllCharacterOptions({ object }) {
           color="#00008B"
         />
         ) : <div className="flex mt-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 m-2 space-y-2 md:space-y-4 gap-x-12">
-            <div className="space-y-4">
-              <div>
-                <h1 className="font-bold text-xl">
-                  {name}
-                </h1>
-                <p>
-                  {nameValue}
-                </p>
-              </div>
-              <div>
-                <h1 className="font-bold text-xl">
-                  {description}
-                </h1>
-                <p>
-                  {descriptionValue}
-                </p>
-              </div>
-            </div>
-            <div>
-              <h1 className="font-bold text-xl">
-                {background}
-              </h1>
-              <p>
-                {backgroundValue}
-              </p>
-            </div>
+        {!aiResponse ? (
+          <div />
+        ) : (
+          <div className="grid w-full">
+            <NpcCard
+              key={npcName}
+              npcNameValue={npcName}
+              npcDescriptionValue={npcDescription}
+              npcBackgroundValue={npcBackground}
+            /> 
           </div>
+        )}
         </div>
       }
     </div>

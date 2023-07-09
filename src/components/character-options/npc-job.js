@@ -9,8 +9,8 @@ export default function JobList({ jobName }) {
         <p className="text-center">Select Job</p>
         <select id="job-list" className="px-4 py-2 bg-defaultButton rounded-lg w-full text-center">
         <option value="">--Please choose a Job--</option>
-          {job.map((jobTitle) => (
-            <option key={jobTitle.name} value={jobTitle.name}>
+          {job.map((jobTitle, index) => (
+            <option key={index} value={jobTitle.name}>
               {jobTitle.name}
             </option>
           ))}
