@@ -67,7 +67,7 @@ export default function AllCharacterOptions() {
         {
           role: "user",
           content: `
-            I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a character description, around 100 characters max, with no filler words but add skin color, eye color, race, sex, and height. For the background, write a short background for a 5E DND character.
+            I need you to create three sections Name, Description, and Background based on these options: ${allOptions}. For the name, I need a first and last name. For the Description, I need a detailed character description, 100 characters max with skin color, eye color, sex, with no filler words. For the background, write a short background for a 5E DND character.
             
             Output it like this:
             Name: First Last
@@ -109,7 +109,7 @@ export default function AllCharacterOptions() {
   const fetchImageResponse = async () => {
     setImage(false);
     const reply = await openai.createImage({
-      prompt: `${descriptionValue}. ${sex}, ${race}, portrait, head, detailed face, 4k`,
+      prompt: `${descriptionValue}. by Boris Vallejo, full body, concept art, hyper-representational art on paperback, octane render, light rendering, VFX simulation`,
       n: 1,
       size: "256x256",
       response_format: "b64_json"
